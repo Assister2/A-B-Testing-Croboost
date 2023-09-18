@@ -1,0 +1,37 @@
+--- 
+import NavBar from "../components/components/NavBar";
+// import styles from "../styles/index.scss";
+interface Props {
+	title: string;
+}
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Croboost">
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<!-- Snowplow -> Mojito -> Test -->
+		<!-- <script type="text/javascript" src="https://app.croboost.ai/dist/default/v1/sptr.js"></script>
+		<script type="text/javascript" src="https://app.croboost.ai/dist/default/v1/mjo.js"></script>
+		<script type="text/javascript" src="https://app.croboost.ai/users/48853761-43ff-4cd0-89b8-855c8eab7e79/tests/38edf4ab-1ae8-4140-8ee2-a209da92a0ef/js/splittestdist.pretty.js"></script> -->
+		<!-- End of Test Scripts -->
+		<title>{title}</title>
+	</head>
+	<style is:inline>
+		.accent-bg-color {
+			background-color: #158370;
+			/* background-color: #7426ab; */
+		}
+		.accent-color {
+			color: #158370;
+		}
+	</style>
+	<body>
+		<NavBar client:load/>
+		<slot />
+	</body>
+</html>
