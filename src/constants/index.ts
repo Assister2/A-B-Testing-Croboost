@@ -1,6 +1,7 @@
 export const API_ROOT =
-  "https://ug9d36lqx9.execute-api.us-east-1.amazonaws.com/api/v1";
-export const ROOT = "https://app.croboost.ai";
+  "https://ug9d36lqx9.execute-api.us-east-1.amazonaws.com/api/v1"
+// export const API_ROOT = "http://localhost:8000/v1"
+export const ROOT = "https://app.croboost.ai"
 export const TEST_CATEGORIES = [
   {
     label: "Page 1",
@@ -18,7 +19,7 @@ export const TEST_CATEGORIES = [
     label: "Navigation",
     value: "Navigation",
   },
-];
+]
 
 export const TEST_ELEMENTS = [
   {
@@ -33,7 +34,7 @@ export const TEST_ELEMENTS = [
     label: "Heading",
     value: "Heading",
   },
-];
+]
 
 export const TEST_VARIATIONS = [
   {
@@ -44,4 +45,4 @@ export const TEST_VARIATIONS = [
     label: "Font Size",
     value: "Font Size",
   },
-];
+]

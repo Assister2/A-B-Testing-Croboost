@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test:unit": "npx vitest --config vitest.config.ts"
+    "test:unit": "npx vitest --config vitest.config.ts",
+    "openapi": "openapi --input openapi.json --output ./src/client"
   },
   "dependencies": {
     "@astrojs/react": "^2.2.1",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "gulp": "^4.0.2",
+    "openapi-typescript-codegen": "^0.25.0",
     "sass": "^1.64.1",
     "vitest": "^0.33.0"
   }
