@@ -6,6 +6,7 @@ const PAGES = {
   ACCOUNT: "/account",
   DASHBOARD: "/dashboard",
   TESTS: "/tests",
+  TESTVIEW: "/testview",
 }
 
 const NavBar = () => {
@@ -28,6 +29,9 @@ const NavBar = () => {
             </a> */}
             <a style={location === PAGES.DASHBOARD ? {color: "#158370"} : {color: "gray"}} className="font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500" href={PAGES.DASHBOARD}>
               Dashboard
+            </a>
+            <a style={location === PAGES.TESTVIEW ? {color: "#158370"} : {color: "gray"}} className="font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500" href={PAGES.TESTVIEW}>
+              Testview
             </a>
           </div>
           <div className='flex flex-row items-center gap-5 mt-5 justify-center sm:mt-0 sm:pl-5'>
