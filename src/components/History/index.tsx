@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react"
-// import AWS from "aws-sdk";
-import Button from "../components/Button"
 import { ROOT } from "../../constants"
 import { Tokens, resetTokens } from "../../utils"
 import { loadTokens } from "../../utils"
@@ -15,8 +13,30 @@ import "./Dashboard.scss"
 import CodeMirror from "@uiw/react-codemirror"
 import { html } from "@codemirror/lang-html"
 import { dracula } from "@uiw/codemirror-theme-dracula"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 
 import { z } from "zod"
+
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const testSchema = z.array(
   z.object({
@@ -39,6 +59,8 @@ const History = () => {
   const [testIndex, setTestIndex] = useState<number>(0)
   const [scripts, setScripts] = useState<string>("")
   const [selected, setSelected] = useState<string>("")
+  
+  
   const constructScripts = (
     sptr: string,
     mojito: string,
@@ -110,119 +132,116 @@ const History = () => {
         <section className="flex flex-col gap-2 w-full lg:w-4/5 overflow-x-auto">
           {scripts && (
             <section className="text-md">
-              {/* <h3 className="text-xs">
-                    Script
-                  </h3> */}
+            
               <CodeMirror
                 value={scripts}
                 height="164px"
                 theme={dracula}
                 extensions={[html()]}
               />
-              {/* <textarea 
-                    className="w-full h-64 text-md"
-                    style={{fontSize: "0.96rem"}}
-                    readOnly={true}
-                    value={scripts}>
-                  </textarea> */}
+              {/* <Button variant="outline" className="text-black font-bold py-2 px-4 rounded my-2">View Code</Button> */}
+
+              <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline"className="text-black font-bold py-2 px-4 rounded my-2">View Code</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[1025px] bg-white m-4">
+        <DialogHeader>
+          <DialogTitle>View Code</DialogTitle>
+
+          <DialogDescription>
+          <CodeMirror
+                value={scripts}
+                height="200px"
+                theme={dracula}
+                extensions={[html()]}
+                readOnly={true}
+              />
+          </DialogDescription>
+        </DialogHeader>
+        
+        {/* <DialogFooter>
+          <Button type="submit">Save changes</Button>
+        </DialogFooter> */}
+      </DialogContent>
+    </Dialog>
+
             </section>
           )}
         </section>
-        <div className="flex flex-col gap-2 w-full lg:w-4/5 overflow-x-auto">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="px-4 py-3">
-                  Name
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Date
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  URL
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Live
-                </th>
-                <th scope="col" className="px-4 py-3">
-                  Delete
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+        {scripts && (<> <div className="flex flex-col gap-2 w-full lg:w-4/5 overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead >URL</TableHead >
+                <TableHead >Live</TableHead >
+                <TableHead >Delete</TableHead >
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {testHistory &&
                 testHistory.map((test, index) => (
-                  <tr
+                  <TableRow
                     key={index}
-                    className={`bg-white border-b dark:bg-gray-800 dark:border-gray-700 ${
-                      selected === test.record_id ? "dark:bg-gray-600" : ""
-                    }`}
+                    className={`bg-white border-b dark:bg-gray-800 dark:border-gray-700 ${selected === test.record_id ? "dark:bg-gray-600" : ""
+                      }`}
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                      handleConstructTags(test)
-                      setSelected(test.record_id)
-                      navigator.clipboard.writeText(`${ROOT}/${test.s3_key}`)
+                      handleConstructTags(test);
+                      setSelected(test.record_id);
+                      navigator.clipboard.writeText(`${ROOT}/${test.s3_key}`);
                     }}
                   >
-                    <td className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {test.title}
-                    </td>
-                    <td className="px-4 py-4">
+                    <TableCell>{test.title}</TableCell>
+                    <TableCell>
                       {new Date(test.iso_created_at)
                         .toISOString()
                         .substring(0, 16)
                         .replace("T", " ")}
-                    </td>
-                    <td className="px-4 py-4">{`${ROOT}/${test.s3_key}`}</td>
-                    <td className="px-4 py-4">
-                      {/* <button
-                        type={"button"}
-                        className="px-3 py-2 text-xs font-medium text-white text-center bg-blue-500 rounded-md"
-                        onClick={() => {}}
-                        style={{ cursor: "pointer" }}
-                      >
-                        get
-                      </button> */}
-                      <input
-                        type="checkbox"
-                        onClick={async () => {
-                          // then change the state
-                          setTestIndex(index)
-                          setTestHistory((prev) => {
-                            const newTest = [...prev]
-                            newTest[index].is_live = !newTest[index].is_live
-                            return newTest
-                          })
-                        }}
+                    </TableCell>
+                    <TableCell>{`${ROOT}/${test.s3_key}`}</TableCell>
+                    <TableCell>
+                      <Checkbox
+                        className="rounded"
                         checked={test.is_live}
+                        onCheckedChange={(newCheckedState) => {
+                          setTestIndex(index);
+                          setTestHistory((prev) => {
+                            const newTest:any = [...prev];
+                            newTest[index].is_live = newCheckedState;
+                            return newTest;
+                          });
+                        }}
                       />
-                    </td>
-                    <td className="px-4 py-4">
-                      <button
+                    </TableCell>
+                    <TableCell>
+                      <Button
                         type={"button"}
-                        className="px-3 py-2 text-xs font-medium text-white text-center bg-red-500 rounded-md"
+                        className="rounded px-3 py-2 text-xs font-medium text-center bg-red-500 hover:bg-red-500"
                         onClick={() => {
-                          const ok = confirm("Delete?")
+                          const ok = confirm("Delete?");
                           if (ok) {
                             userData &&
                               deleteTest(userData.id_token, test.record_id)
                                 .then((res) => {
-                                  window.location.reload()
+                                  window.location.reload();
                                 })
                                 .catch((err) => {
-                                  console.log(err)
-                                })
+                                  console.log(err);
+                                });
                           }
                         }}
                         style={{ cursor: "pointer" }}
                       >
                         del
-                      </button>
-                    </td>
-                  </tr>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
                 ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
         <div className="grid content-start">
           <div className="inline-block text-center">
@@ -231,14 +250,16 @@ const History = () => {
             </p>
           </div>
           <Button
-            text="Logout"
             onClick={() => {
               resetTokens()
               window.location.reload()
             }}
-            isDisabled={false}
-          />
-        </div>
+            disabled={false}
+            style={{ backgroundColor: "rgb(21, 131, 112)" }}
+            className="text-white font-bold py-2 px-4 rounded"
+          >Logout</Button>
+        </div></>)}
+       
       </div>
     </div>
   )
