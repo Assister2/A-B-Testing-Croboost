@@ -42,3 +42,8 @@
   width: 115px;
   height: auto;
 }
+
+.bg-main {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 245 245 / var(--tw-bg-opacity));
+}

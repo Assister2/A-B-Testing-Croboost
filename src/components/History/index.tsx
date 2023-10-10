@@ -171,7 +171,7 @@ const History = () => {
         </section>
         {scripts && (<> <div className="flex flex-col gap-2 w-full lg:w-4/5 overflow-x-auto">
           <Table>
-            <TableHeader>
+            <TableHeader className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Date</TableHead>
