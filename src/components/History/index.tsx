@@ -90,8 +90,8 @@ const History = () => {
       setUserData(tokens)
       getTests(tokens.id_token)
         .then((tests) => {
+          console.log("111",tests)
           const validatedTest = testSchema.parse(tests)
-          console.log(validatedTest)
           setTestHistory(validatedTest)
           if (tests.length > 0) {
             handleConstructTags(tests[0])
@@ -121,6 +121,9 @@ const History = () => {
     }
     updateTestValues()
   }, [testHistory])
+
+
+  console.log(testHistory)
   return (
     <div className="p-5 bg-main min-w-screen min-h-screen">
       <div className="container mx-auto flex flex-col items-center mt-5">
@@ -156,6 +159,7 @@ const History = () => {
                 theme={dracula}
                 extensions={[html()]}
                 readOnly={true}
+                editable={false}
               />
           </DialogDescription>
         </DialogHeader>
