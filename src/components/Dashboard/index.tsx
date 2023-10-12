@@ -110,12 +110,17 @@ export default function App() {
   }, [])
 
 
-  const formatISODate = (isoDate:any) => {
-    const date = new Date(isoDate);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-based
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  const formatISODate = (isoDate: string) => {
+    const date:any = new Date(isoDate);
+    const currentDate:any = new Date();
+    const timeDifference = currentDate - date;
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Calculate days
+  
+    if (daysDifference === 0) {
+      return "Started today";
+    } else {
+      return `Started  ${daysDifference} day${daysDifference !== 1 ? 's' : ''} ago`;
+    }
   };
 
   return (
