@@ -90,7 +90,6 @@ const History = () => {
       setUserData(tokens)
       getTests(tokens.id_token)
         .then((tests) => {
-          console.log("111",tests)
           const validatedTest = testSchema.parse(tests)
           setTestHistory(validatedTest)
           if (tests.length > 0) {
@@ -116,7 +115,7 @@ const History = () => {
           test.title,
           test.is_live
         )
-        console.log(res)
+       
       }
     }
     updateTestValues()
@@ -174,7 +173,7 @@ const History = () => {
           )}
         </section>
         {scripts && (<> <div className="flex flex-col gap-2 w-full lg:w-4/5 overflow-x-auto">
-          <Table>
+          <Table className="w-full">
             <TableHeader className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <TableRow>
                 <TableHead>Name</TableHead>

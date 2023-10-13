@@ -72,7 +72,7 @@ const NavBar = () => {
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              <NavigationMenuItem>
+              {/* <NavigationMenuItem>
                 <NavigationMenuLink
                   href={PAGES.TESTVIEW}
                   active={location === PAGES.TESTVIEW}
@@ -84,7 +84,7 @@ const NavBar = () => {
                 >
                   Testview
                 </NavigationMenuLink>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
               {/* Add more menu items as needed */}
             </NavigationMenuList>
             <NavigationMenuIndicator />

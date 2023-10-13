@@ -1,0 +1,20 @@
+---
+import Chart from '../../components/Chart';
+import Layout from '../../layouts/Layout.astro';
+
+export function getStaticPaths() {
+  return [
+    {params: {id: '59be23dd-7685-4bc7-9f39-67928637162c'}},
+  ];
+}
+
+const { id } = Astro.params;
+---
+
+
+
+
+
+<Layout title="Croboost">
+	<Chart id={id} client:load />
+</Layout>
