@@ -149,7 +149,7 @@ export default function App() {
                 <Button
                   variant="outline"
                   className='rounded-full bg-blue-800 text-white text-xs px-6 py-2 hover:bg-blue-700 hover:text-white border-0'
-                  onClick={() => handleButtonClick(test.record_id)}
+                  onClick={() => handleButtonClick('80242517-ac80-4b41-8318-b7197599ceba')}
                 >
                   View Data
                 </Button>
