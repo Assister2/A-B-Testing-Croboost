@@ -59,8 +59,8 @@ const History = () => {
   const [testIndex, setTestIndex] = useState<number>(0)
   const [scripts, setScripts] = useState<string>("")
   const [selected, setSelected] = useState<string>("")
-  
-  
+
+
   const constructScripts = (
     sptr: string,
     mojito: string,
@@ -86,6 +86,7 @@ const History = () => {
   }
   useEffect(() => {
     const tokens = loadTokens()
+    console.log(tokens?.id_token)
     if (tokens) {
       setUserData(tokens)
       getTests(tokens.id_token)
@@ -115,14 +116,13 @@ const History = () => {
           test.title,
           test.is_live
         )
-       
+
       }
     }
     updateTestValues()
   }, [testHistory])
 
 
-  console.log(testHistory)
   return (
     <div className="p-5 bg-main min-w-screen min-h-screen">
       <div className="container mx-auto flex flex-col items-center mt-5">
@@ -134,7 +134,7 @@ const History = () => {
         <section className="flex flex-col gap-2 w-full lg:w-4/5 overflow-x-auto">
           {scripts && (
             <section className="text-md">
-            
+
               <CodeMirror
                 value={scripts}
                 height="164px"
@@ -144,30 +144,30 @@ const History = () => {
               {/* <Button variant="outline" className="text-black font-bold py-2 px-4 rounded my-2">View Code</Button> */}
 
               <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline"className="text-black font-bold py-2 px-4 rounded my-2">View Code</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[1025px] bg-white m-4">
-        <DialogHeader>
-          <DialogTitle>View Code</DialogTitle>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="text-black font-bold py-2 px-4 rounded my-2">View Code</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[1025px] bg-white m-4">
+                  <DialogHeader>
+                    <DialogTitle>View Code</DialogTitle>
 
-          <DialogDescription>
-          <CodeMirror
-                value={scripts}
-                height="200px"
-                theme={dracula}
-                extensions={[html()]}
-                readOnly={true}
-                editable={false}
-              />
-          </DialogDescription>
-        </DialogHeader>
-        
-        {/* <DialogFooter>
+                    <DialogDescription>
+                      <CodeMirror
+                        value={scripts}
+                        height="200px"
+                        theme={dracula}
+                        extensions={[html()]}
+                        readOnly={true}
+                        editable={false}
+                      />
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  {/* <DialogFooter>
           <Button type="submit">Save changes</Button>
         </DialogFooter> */}
-      </DialogContent>
-    </Dialog>
+                </DialogContent>
+              </Dialog>
 
             </section>
           )}
@@ -212,7 +212,7 @@ const History = () => {
                         onCheckedChange={(newCheckedState) => {
                           setTestIndex(index);
                           setTestHistory((prev) => {
-                            const newTest:any = [...prev];
+                            const newTest: any = [...prev];
                             newTest[index].is_live = newCheckedState;
                             return newTest;
                           });
@@ -246,23 +246,23 @@ const History = () => {
             </TableBody>
           </Table>
         </div>
-        <div className="grid content-start">
-          <div className="inline-block text-center">
-            <p className="text-base text-black" style={{ padding: "12px" }}>
-              <b>User:</b> {userData && userData.email}
-            </p>
-          </div>
-          <Button
-            onClick={() => {
-              resetTokens()
-              window.location.reload()
-            }}
-            disabled={false}
-            style={{ backgroundColor: "rgb(21, 131, 112)" }}
-            className="text-white font-bold py-2 px-4 rounded"
-          >Logout</Button>
-        </div></>)}
-       
+          <div className="grid content-start">
+            <div className="inline-block text-center">
+              <p className="text-base text-black" style={{ padding: "12px" }}>
+                <b>User:</b> {userData && userData.email}
+              </p>
+            </div>
+            <Button
+              onClick={() => {
+                resetTokens()
+                window.location.reload()
+              }}
+              disabled={false}
+              style={{ backgroundColor: "rgb(21, 131, 112)" }}
+              className="text-white font-bold py-2 px-4 rounded"
+            >Logout</Button>
+          </div></>)}
+
       </div>
     </div>
   )
