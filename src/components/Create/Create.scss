@@ -56,7 +56,15 @@
   border-radius: 9px !important;
 }
 
-.data-\[state\=active\]\:shadow[data-state=active]{
-  background-color: #ffffff !important;
+.createTest .data-\[state\=active\]\:shadow[data-state=active]{
+  color: #FFF !important;
+  background-color: #303030 !important;
   border-radius: 9px !important;
 }
+
+.screenShot .data-\[state\=active\]\:shadow[data-state=active] {
+  color: #000 !important;
+  background-color: #ffffffe0 !important;
+  border-radius: 9px !important;
+}
+

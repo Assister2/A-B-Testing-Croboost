@@ -117,7 +117,7 @@ export const getChartData = async (token: string,id:any): Promise<any> => {
 export const getUserData = async () => {
    const tokens: any = localStorage.getItem('ab-website-tokens');
    const parsedTokens = JSON.parse(tokens);
-
+  
    const url = `${API_ROOT}/ab/tests/`
 
      const response = await fetch(url, {
@@ -129,5 +129,7 @@ export const getUserData = async () => {
   })
   const data = await response.json()
   console.log(data)
-  return data
+  return parsedTokens?.id_token
 }
+
+

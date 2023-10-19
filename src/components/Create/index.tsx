@@ -31,6 +31,21 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 
 
@@ -172,21 +187,21 @@ const Create = () => {
   }
 
   const FormSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }).refine((value) => value.trim() !== "", {
-    message: "Name is required",
-  }),
-  id: z.number().refine((value) => value !== null, {
-    message: "ID is required",
-  }),
-  sampleRate: z
-    .number()
-    .refine((value) => value !== null && value >= 0 && [1, 0.1, 0.5].includes(value), {
-      message:
-        "Sample rate must be a non-negative number and can only be 0.1, 0.5, or 1.",
+    name: z.string().min(2, {
+      message: "Name must be at least 2 characters.",
+    }).refine((value) => value.trim() !== "", {
+      message: "Name is required",
     }),
-});
+    id: z.number().refine((value) => value !== null, {
+      message: "ID is required",
+    }),
+    sampleRate: z
+      .number()
+      .refine((value) => value !== null && value >= 0 && [1, 0.1, 0.5].includes(value), {
+        message:
+          "Sample rate must be a non-negative number and can only be 0.1, 0.5, or 1.",
+      }),
+  });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -195,8 +210,202 @@ const Create = () => {
 
 
   return (
-    <div className="p-5 bg-main min-w-screen min-h-screen">
-      <Form {...form}>
+    <div className="p-4 min-w-screen min-h-screen bg-[#132632]">
+      <h1 className="font-bold text-2xl text-white">Create A/B Test</h1>
+      <div className="flex flex-col md:flex-row my-4 gap-4">
+        <div className="flex-auto w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+          <div className="h-full flex flex-col">
+            <Card className="w-full bg-white p-5 border-none flex-grow">
+              <CardHeader className="">
+                <CardTitle className="font-bold text-lg leading-4">Create Test</CardTitle>
+              </CardHeader>
+              <CardContent className="">
+                <Form {...form}>
+                  <form
+                    onSubmit={handleSubmit(generateTest)}
+                  >
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="...">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
+                              <FormControl>
+                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
+                                  required: "Name is required",
+                                })} />
+                              </FormControl>
+                              {errors.name && (
+                                <FormDescription className="text-red-500 text-xs">
+                                  {errors.name.message}
+                                </FormDescription>
+                              )}
+
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="...">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
+                              <FormControl>
+                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
+                                  required: "Name is required",
+                                })} />
+                              </FormControl>
+                              {errors.name && (
+                                <FormDescription className="text-red-500 text-xs">
+                                  {errors.name.message}
+                                </FormDescription>
+                              )}
+
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="...">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
+                              <FormControl>
+                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
+                                  required: "Name is required",
+                                })} />
+                              </FormControl>
+                              {errors.name && (
+                                <FormDescription className="text-red-500 text-xs">
+                                  {errors.name.message}
+                                </FormDescription>
+                              )}
+
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3.5 my-4">
+                      <Tabs defaultValue="a" className="createTest w-full">
+                        <TabsList className="grid w-full grid-cols-2 p-0 text-base font-medium leading-4">
+                          <TabsTrigger value="a" className="text-[#606060] p-2">Variant A</TabsTrigger>
+                          <TabsTrigger value="b" className="text-[#606060] p-2">Variant B</TabsTrigger>
+                        </TabsList>
+
+                        <TabsContent value="a" className="py-5">
+                          <section className={`mb-2 grid grid-cols-2 gap-2`}>
+                            <section className={`flex flex-col`}>
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">CSS</Label>
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeCSS")} />
+
+                            </section>
+                            <section className={`flex flex-col`}>
+
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">JavaScript</Label>
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeJS")} />
+
+                            </section>
+
+                          </section>
+                        </TabsContent>
+
+                        <TabsContent value="b" className="py-5">
+                          <section className={`mb-2 grid grid-cols-2 gap-2`}>
+                            <section className={`flex flex-col`}>
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">CSS2</Label>
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeCSS")} />
+
+                            </section>
+                            <section className={`flex flex-col`}>
+
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">JavaScript2</Label>
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeJS")} />
+
+                            </section>
+
+                          </section>
+                        </TabsContent>
+
+                      </Tabs>
+                    </div>
+
+                    <Button
+                      id="submit-test-button"
+                      className="mx-auto my-2 bg-button accent-bg-color text-white p-3 w-36 rounded shadow-md disabled:bg-neutral-500 w-full"
+                      type={"submit"}
+                    >
+                      Confirm A/B Test
+                    </Button>
+                  </form>
+                </Form>
+              </CardContent>
+
+            </Card>
+          </div>
+        </div>
+        <div className="flex-auto w-full md:w-1/2 lg:w-2/3 xl:w-1/4">
+          <div className="h-full flex flex-col">
+            <Card className="w-full bg-[#00000042] border-none p-5 flex-grow">
+              <CardHeader className="">
+                <CardTitle className="font-bold text-lg leading-4 text-white">Screenshots</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2">
+                    <Tabs defaultValue="a" className="screenShot w-full">
+                      <TabsList className="grid w-full grid-cols-2 text-base font-medium leading-4 p-0">
+                        <TabsTrigger value="a" className="text-[#ffffff9e]">Variant A</TabsTrigger>
+                        <TabsTrigger value="b" className="text-[#ffffff9e]">Variant B</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="a">
+                        <Card className="border-dashed border-2 rounded-none">
+                          <CardHeader>
+                            <CardTitle className="text-white">Variant A</CardTitle>
+                          </CardHeader>
+                        </Card>
+                      </TabsContent>
+                      <TabsContent value="b">
+                        <Card className="border-dashed border-2 rounded-none">
+                          <CardHeader>
+                            <CardTitle className="text-white">Variant B</CardTitle>
+                          </CardHeader>
+                        </Card>
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+                  <div className="md:col-span-1">
+                    <Card className="w-full bg-[#00000042] border-none p-5">
+                      <CardHeader className="">
+                        <CardTitle className="font-bold text-lg leading-4 text-white">Screenshots</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+      </div>
+
+      {/* <Form {...form}>
         <form
           className="container mx-auto flex flex-col items-center"
           onSubmit={handleSubmit(generateTest)}
@@ -214,8 +423,8 @@ const Create = () => {
                       <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
                       <FormControl>
                         <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
-                  required: "Name is required",
-                })} />
+                          required: "Name is required",
+                        })} />
                       </FormControl>
                       {errors.name && (
                         <FormDescription className="text-red-500 text-xs">
@@ -330,101 +539,27 @@ const Create = () => {
                 </TabsContent>
 
                 <TabsContent value="variant" className="py-5">
-                <section className={`mb-2 grid grid-cols-2 gap-2`}>
-                  <section className={`flex flex-col`}>
-                  <Label htmlFor="variant" className="text-label text-sm mb-3">Variant JavaScript</Label>
-                  <Textarea placeholder="Type your message here." id="variant" rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-black"   {...register("Variant.codeJS")} />
+                  <section className={`mb-2 grid grid-cols-2 gap-2`}>
+                    <section className={`flex flex-col`}>
+                      <Label htmlFor="variant" className="text-label text-sm mb-3">Variant JavaScript</Label>
+                      <Textarea placeholder="Type your message here." id="variant" rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-black"   {...register("Variant.codeJS")} />
 
+                    </section>
+                    <section className={`flex flex-col`}>
+                      <Label htmlFor="css" className="text-label text-sm mb-3">Variant CSS</Label>
+                      <Textarea placeholder="Type your message here." id="css" rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-black"   {...register("Variant.codeCSS")} />
+
+                    </section>
                   </section>
-                  <section className={`flex flex-col`}>
-                  <Label htmlFor="css" className="text-label text-sm mb-3">Variant CSS</Label>
-                  <Textarea placeholder="Type your message here." id="css" rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-black"   {...register("Variant.codeCSS")} />
-                    
-                  </section>
-                </section>
                 </TabsContent>
 
               </Tabs>
-              {/* <ul className="flex flex-wrap">
-                <li className="mr-2">
-                  <button
-                    type={"button"}
-                    onClick={() => setTab("Original")}
-                    className={`inline-block p-3 ${tab === "Original"
-                        ? "active dark:text-blue-500 dark:border-blue-500"
-                        : "hover:text-gray-500 hover:border-gray-300 dark:hover:text-gray-300"
-                      }`}
-                  >
-                    Original (A)
-                  </button>
-                </li>
-                <li className="mr-2">
-                  <button
-                    type={"button"}
-                    onClick={() => setTab("Variant")}
-                    className={`inline-block p-3 ${tab === "Variant"
-                        ? "active dark:text-blue-500 dark:border-blue-500 hover"
-                        : "hover:text-gray-500 hover:border-gray-300 dark:hover:text-gray-300"
-                      }`}
-                  >
-                    Variant (B)
-                  </button>
-                </li>
-              </ul> */}
+              
             </div>
-            {/* <div className="text-sm my-2">
-              {tab === "Original" && (
-                <section className={`mb-2 grid grid-cols-2 gap-2`}>
-                  <section className={`flex flex-col`}>
-                    <label className="text-label text-sm mb-3">
-                      Original JavaScript
-                    </label>
-                    <textarea
-                      rows={4}
-                      className="border border-text-input rounded py-3 px-4 text-sm text-black"
-                      {...register("Original.codeJS")}
-                    />
-                  </section>
-                  <section className={`flex flex-col`}>
-                    <label className="text-label text-sm mb-3">
-                      Original CSS
-                    </label>
-                    <textarea
-                      rows={4}
-                      className="border border-text-input rounded py-3 px-4 text-sm text-black"
-                      {...register("Original.codeCSS")}
-                    />
-                  </section>
-                </section>
-              )}
-              {tab === "Variant" && (
-                <section className={`mb-2 grid grid-cols-2 gap-2`}>
-                  <section className={`flex flex-col`}>
-                    <label className="text-label text-sm mb-3">
-                      Variant JavaScript
-                    </label>
-                    <textarea
-                      rows={4}
-                      className="border border-text-input rounded py-3 px-4 text-sm text-black"
-                      {...register("Variant.codeJS")}
-                    />
-                  </section>
-                  <section className={`flex flex-col`}>
-                    <label className="text-label text-sm mb-3">Variant CSS</label>
-                    <textarea
-                      rows={4}
-                      className="border border-text-input rounded py-3 px-4 text-sm text-black"
-                      {...register("Variant.codeCSS")}
-                    />
-                  </section>
-                </section>
-              )}
-            </div> */}
+            
           </section>
           <section className="mt-4 flex flex-col gap-2 w-full lg:w-3/5 bg-white rounded p-4">
-            {/* <h3 className="font-bold text-lg text-black">
-            Current Test
-          </h3> */}
+          
             <Button
               type={"button"}
               onClick={() => {
@@ -480,7 +615,8 @@ const Create = () => {
             </Button>
           </section>
         </form>
-      </Form>
+      </Form> */}
+
     </div>
   )
 }

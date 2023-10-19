@@ -25,8 +25,15 @@ const NavBar = () => {
   useEffect(() => {
     setLocation(window.location.pathname);
   }, []);
+
+  const headerStyle = {
+    backgroundColor: '#142732',
+  };
   return (
-    <header className="flex flex-wrap justify-center sm:flex-nowrap z-50 w-full bg-white text-md py-4">
+    <header className="flex flex-wrap justify-center sm:flex-nowrap z-50 w-full  text-md py-4" style={headerStyle}>
+      <div className='flex flex-row items-center gap-5 mt-5 justify-center sm:mt-0 sm:pl-5'>
+        <a className="flex-none text-xl font-semibold text-white bg-[#522646] p-3.5 leading-4 rounded-xl" href={PAGES.HOME}>Croboost</a>
+      </div>
       <nav className="w-full mx-auto px-4 grid grid-cols-3 items-center justify-between">
         <div className="flex flex-row gap-6 mt-5 justify-start sm:mt-0 sm:pl-5">
           <NavigationMenu>
@@ -93,9 +100,7 @@ const NavBar = () => {
 
 
         </div>
-        <div className='flex flex-row items-center gap-5 mt-5 justify-center sm:mt-0 sm:pl-5'>
-          <a className="flex-none text-xl font-semibold dark:text-black" href={PAGES.HOME}>Croboost</a>
-        </div>
+
         <div className='flex flex-row items-center gap-5 mt-5 justify-end sm:mt-0 sm:pl-5'>
           {/* <a className="font-medium text-blue-500" href="#" aria-current="page">Landing</a> */}
           {/* <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500" href="#">Account</a> */}
