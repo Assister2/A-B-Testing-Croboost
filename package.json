@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "test:unit": "npx vitest --config vitest.config.ts",
-    "openapi": "openapi --input openapi.json --output ./src/client"
+    "openapi": "openapi --input openapi.json --output ./src/client",
+    "shadcn": "npx shadcn-ui@latest init"
   },
   "dependencies": {
     "@astrojs/react": "^2.2.1",

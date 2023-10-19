@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/card"
 import { v4 as uuidv4 } from 'uuid';
 
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -78,7 +79,6 @@ export default function App() {
   const [currentData, setCurrentData] = React.useState<ABTest[]>([]);
   const [previousData, setPreviousData] = React.useState<ABTest[]>([]);
 
-
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchTestData()
@@ -91,18 +91,19 @@ export default function App() {
     const tokens = loadTokens();
     if (tokens) {
       getTests(tokens.id_token)
-        .then((tests) => {
+        .then((tests: any) => {
           // Sort the tests by creation date
-          tests.sort((a, b) => {
+          tests.sort((a: any, b: any) => {
             return new Date(b.iso_created_at).getTime() - new Date(a.iso_created_at).getTime();
           });
 
           // Separate the tests into current and previous based on is_live property
-          const currentTests = tests.filter((test) => test.is_live === true);
-          const previousTests = tests.filter((test) => test.is_live === false);
+          const currentTests = tests.filter((test: any) => test.is_live === true);
+          const previousTests = tests.filter((test: any) => test.is_live === false);
 
           setCurrentData(currentTests);
           setPreviousData(previousTests);
+
         })
         .catch((err) => {
           console.log(err);
@@ -133,8 +134,6 @@ export default function App() {
 
     window.location.href = dashboardUrl;
   }
-
-
 
 
   return (
@@ -199,3 +198,5 @@ export default function App() {
     </div>
   );
 }
+
+
