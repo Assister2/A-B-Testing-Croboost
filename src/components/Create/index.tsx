@@ -47,6 +47,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+import screenshot from "../../../public/image/image 113.png"
+
 
 
 const getUnixTime = () => Math.trunc(new Date().getTime() / 1000)
@@ -201,6 +203,18 @@ const Create = () => {
         message:
           "Sample rate must be a non-negative number and can only be 0.1, 0.5, or 1.",
       }),
+    page: z
+      .string({
+        required_error: "Please select page.",
+      }),
+    description: z
+      .string()
+      .min(10, {
+        message: "Bio must be at least 10 characters.",
+      })
+      .max(160, {
+        message: "Bio must not be longer than 30 characters.",
+      }),
   });
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -211,8 +225,15 @@ const Create = () => {
 
   return (
     <div className="p-4 min-w-screen min-h-screen bg-[#132632]">
-      <h1 className="font-bold text-2xl text-white">Create A/B Test</h1>
-      <div className="flex flex-col md:flex-row my-4 gap-4">
+      <div className="flex justify-between">
+        <a href="/dashboard" className="text-white cursor-pointer underline">Back to all live tests</a>
+        <div>
+          <Button variant="outline" className="me-2 text-white bg-[#10503D] border-none rounded hover:bg-[#10503D] hover:text-white hover:border-none">Add to Backlog</Button>
+          <Button variant="outline" className="text-white bg-[#10503D] border-none rounded hover:bg-[#10503D] hover:text-white hover:border-none">Save</Button>
+        </div>
+      </div>
+      <h1 className="font-bold text-2xl text-white my-2">Create A/B Test</h1>
+      <div className="flex flex-col md:flex-row my-5 gap-4">
         <div className="flex-auto w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
           <div className="h-full flex flex-col">
             <Card className="w-full bg-white p-5 border-none flex-grow">
@@ -231,9 +252,9 @@ const Create = () => {
                           name="name"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
+                              <FormLabel className="text-label text-sm mb-3">Test Name</FormLabel>
                               <FormControl>
-                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
+                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" placeholder="Test Name" {...field} {...register("name", {
                                   required: "Name is required",
                                 })} />
                               </FormControl>
@@ -252,22 +273,24 @@ const Create = () => {
                       <div className="...">
                         <FormField
                           control={form.control}
-                          name="name"
+                          name="page"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
-                              <FormControl>
-                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
-                                  required: "Name is required",
-                                })} />
-                              </FormControl>
-                              {errors.name && (
-                                <FormDescription className="text-red-500 text-xs">
-                                  {errors.name.message}
-                                </FormDescription>
-                              )}
-
-
+                              <FormLabel>Pages</FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="border-neutral-300 rounded">
+                                    <SelectValue placeholder="All Pages" className="font-medium" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="1">Page 1</SelectItem>
+                                  <SelectItem value="2">Page 2</SelectItem>
+                                  <SelectItem value="3">Page 3</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormDescription>
+                              </FormDescription>
                               <FormMessage />
                             </FormItem>
                           )}
@@ -276,22 +299,21 @@ const Create = () => {
                       <div className="...">
                         <FormField
                           control={form.control}
-                          name="name"
+                          name="description"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
+                              <FormLabel>Description</FormLabel>
                               <FormControl>
-                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
-                                  required: "Name is required",
-                                })} />
+                                <Textarea
+                                  placeholder="Test Name"
+                                  className="resize-none border-neutral-300 rounded bg-[#00000014]"
+                                  rows={6}
+                                  {...field}
+                                />
                               </FormControl>
-                              {errors.name && (
-                                <FormDescription className="text-red-500 text-xs">
-                                  {errors.name.message}
-                                </FormDescription>
-                              )}
+                              <FormDescription>
 
-
+                              </FormDescription>
                               <FormMessage />
                             </FormItem>
                           )}
@@ -301,9 +323,9 @@ const Create = () => {
 
                     <div className="flex items-center gap-3.5 my-4">
                       <Tabs defaultValue="a" className="createTest w-full">
-                        <TabsList className="grid w-full grid-cols-2 p-0 text-base font-medium leading-4">
-                          <TabsTrigger value="a" className="text-[#606060] p-2">Variant A</TabsTrigger>
-                          <TabsTrigger value="b" className="text-[#606060] p-2">Variant B</TabsTrigger>
+                        <TabsList className="grid w-full grid-cols-2 p-0 text-base font-medium leading-4 max-w-[275px]">
+                          <TabsTrigger value="a" className="text-[#606060] p-3">Variant A</TabsTrigger>
+                          <TabsTrigger value="b" className="text-[#606060] p-3">Variant B</TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="a" className="py-5">
@@ -364,40 +386,36 @@ const Create = () => {
                 <CardTitle className="font-bold text-lg leading-4 text-white">Screenshots</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="md:col-span-2">
-                    <Tabs defaultValue="a" className="screenShot w-full">
-                      <TabsList className="grid w-full grid-cols-2 text-base font-medium leading-4 p-0">
-                        <TabsTrigger value="a" className="text-[#ffffff9e]">Variant A</TabsTrigger>
-                        <TabsTrigger value="b" className="text-[#ffffff9e]">Variant B</TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="a">
+                <div>
+                  <Tabs defaultValue="a" className="screenShot w-full">
+                    <TabsList className="grid w-full grid-cols-2 text-base font-medium leading-4 p-0 max-w-[200px]">
+                      <TabsTrigger value="a" className="text-[#ffffff9e] p-3 text-start">Variant A</TabsTrigger>
+                      <TabsTrigger value="b" className="text-[#ffffff9e] p-3">Variant B</TabsTrigger>
+                    </TabsList>
+
+                    <div className="text-white grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+
+                      <div className="text-white col-span-2"><TabsContent value="a" className="">
                         <Card className="border-dashed border-2 rounded-none">
-                          <CardHeader>
+                          <CardHeader className="h-60">
                             <CardTitle className="text-white">Variant A</CardTitle>
                           </CardHeader>
                         </Card>
                       </TabsContent>
-                      <TabsContent value="b">
-                        <Card className="border-dashed border-2 rounded-none">
-                          <CardHeader>
-                            <CardTitle className="text-white">Variant B</CardTitle>
-                          </CardHeader>
-                        </Card>
-                      </TabsContent>
-                    </Tabs>
-                  </div>
-                  <div className="md:col-span-1">
-                    <Card className="w-full bg-[#00000042] border-none p-5">
-                      <CardHeader className="">
-                        <CardTitle className="font-bold text-lg leading-4 text-white">Screenshots</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-
-                      </CardContent>
-                    </Card>
-                  </div>
+                        <TabsContent value="b" className="">
+                          <Card className="border-dashed border-2 rounded-none">
+                            <CardHeader className="h-60">
+                              <CardTitle className="text-white">Variant B</CardTitle>
+                            </CardHeader>
+                          </Card>
+                        </TabsContent></div>
+                      <div className="text-white rounded-none ">
+                        <img src={screenshot} className="h-64 w-full" />
+                      </div>
+                    </div>
+                  </Tabs>
                 </div>
+
               </CardContent>
             </Card>
           </div>
