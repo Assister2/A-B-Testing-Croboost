@@ -128,9 +128,8 @@ export const getUserData = async () => {
     },
   })
   const data = await response.json()
-  return data
+  console.log(data)
+  return parsedTokens?.id_token
 }
-
-
 
 
