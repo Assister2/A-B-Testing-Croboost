@@ -1,14 +1,29 @@
 ---
-import Chart from "../../components/Chart";
-import Layout from "../../layouts/Layout.astro";
+import Chart from '../../components/Chart';
+import Layout from '../../layouts/Layout.astro';
+import {getTests} from '../../client/abtest'
 
-export const prerender = false;
 
-const url = Astro.url.pathname;
-console.log(url);
-let id = url.split("/").at(-1);
+export const getStaticPaths = async () => {
+
+  const test = await getTests("eyJraWQiOiJ5WWljTmxsZTNwWkJ2SlF5SzVGUFFGMHhqN29LWE1xcUR0MXFuK2I5dnRRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1ZWVmZjkzZC03MTE5LTRhMmUtOTA3YS0wODA2ZTM5ZmJkZDYiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX1ZhOThSc0FtTiIsImNvZ25pdG86dXNlcm5hbWUiOiI1ZWVmZjkzZC03MTE5LTRhMmUtOTA3YS0wODA2ZTM5ZmJkZDYiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0XzE2OTYzMTUzMzciLCJvcmlnaW5fanRpIjoiZWIzNGFlMmUtODQzNy00YTZlLTgyMjUtOTFmZjJjMjY2NjEyIiwiYXVkIjoiNXEyaGNxZzA4cHV0MjhzaWsxOGY2aWlqbm8iLCJldmVudF9pZCI6IjUyNWY0ODlmLTJmNzYtNDk2NS05Nzg3LWE0ZGUyYjVjMjdmOSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjk3NDYxNDQzLCJleHAiOjE2OTc0NjUwNDMsImlhdCI6MTY5NzQ2MTQ0MywianRpIjoiNjIwZGFlNjUtNjk1MS00NDUzLTg4ZjgtNDEzNDFiNmQyNjliIiwiZW1haWwiOiJ0ZXN0QG1haWxpbmF0b3IuY29tIn0.b4R0zD6_85SAukS4RqomT7TSXFs75QoNw6ivlaqv-ZCQDzgklF3wJ1k558UCqmLYGahOFs4bbCpWS4t0bIuGtadlQvtpsMnTFuzLD8EgUtFRuzvpv2TQsP8Du0riycJGuq-4oRqumI-1zYLv3tw_tylaHUnLGtfAQr9f7peLxify5oVAPh4-ilIMYHXtZDrVoLXbE0FZV0j4LLAZr-wklO4I7FkrycW-YqywZsGwWzQfuVBwcP7m3rP6eEWS3sjGWDPUukLVPKgyLDdB4FZShTpNxLRbR2OHUtwHQIvR0IHC90qAVxXQgijNne5cwuYlLeZsuYubHFmhx2Sa_FMtQQ")
+
+  return test.map((post) => {
+    return {
+      params: { id: post.record_id },
+      props: { post },
+    };
+  }); 
+
+  // return [
+  //   {params: {id: '80242517-ac80-4b41-8318-b7197599ceba'}},
+  // ];
+}
+
+const { id } = Astro.params;
 ---
 
+
 <Layout title="Croboost">
-  <Chart id={id} client:load />
+	<Chart id={id} client:load />
 </Layout>

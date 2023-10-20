@@ -54,7 +54,6 @@ const createChart = (data: any, title: any, dataKey: any) => {
 };
 
 const Chart = (id: any) => {
-  // console.log(id)
   const [notification, setNotification] = useState(null);
   const [allData, setAllData] = useState([]);
   const [chartData, setChartData] = useState([]);
