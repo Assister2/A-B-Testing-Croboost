@@ -10,6 +10,7 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from '@/components/ui/navigation-menu';
+import Personal from "../../../public/image/personal.png"
 
 
 const PAGES = {
@@ -18,6 +19,11 @@ const PAGES = {
   DASHBOARD: "/dashboard",
   TESTS: "/tests",
   TESTVIEW: "/testview",
+  ABTESTBACKLOG: "/backlog",
+  SEO: "/seo",
+  ACQUISTION: "/acquisition",
+  CONVERSION: "/Conversion",
+  SUGGESTION: "/Suggestions"
 }
 
 const NavBar = () => {
@@ -34,17 +40,31 @@ const NavBar = () => {
       <div className='flex flex-row items-center gap-5 mt-5 justify-center sm:mt-0 sm:pl-5'>
         <a className="flex-none text-xl font-semibold text-white bg-[#522646] p-3.5 leading-4 rounded-xl" href={PAGES.HOME}>Croboost</a>
       </div>
-      <nav className="w-full mx-auto px-4 grid grid-cols-3 items-center justify-between">
+      <nav className="w-full flex mx-auto px-4 items-center justify-between p-2.5">
         <div className="flex flex-row gap-6 mt-5 justify-start sm:mt-0 sm:pl-5">
           <NavigationMenu>
             <NavigationMenuList className="space-x-4">
+
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href={PAGES.ABTESTBACKLOG}
+                  active={location === PAGES.ABTESTBACKLOG}
+                  style={
+                    location === PAGES.ABTESTBACKLOG
+                      ? { color: '#ffffff9e', background: "#ffffff1a", padding: "8px", borderRadius: "8px" }
+                      : { color: 'gray' }
+                  }
+                >
+                  A/B Tests Backlog
+                </NavigationMenuLink>
+              </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink
                   href={PAGES.HOME}
                   active={location === PAGES.HOME}
                   style={
                     location === PAGES.HOME
-                      ? { color: '#158370' }
+                      ? { color: '#ffffff9e', background: "#ffffff1a", padding: "8px", borderRadius: "8px" }
                       : { color: 'gray' }
                   }
                 >
@@ -57,11 +77,11 @@ const NavBar = () => {
                   active={location === PAGES.TESTS}
                   style={
                     location === PAGES.TESTS
-                      ? { color: '#158370' }
+                      ? { color: '#ffffff9e', background: "#ffffff1a", padding: "5px", borderRadius: "8px" }
                       : { color: 'gray' }
                   }
                 >
-                  Tests
+                  Live Tests
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
@@ -71,7 +91,7 @@ const NavBar = () => {
                   active={location === PAGES.DASHBOARD}
                   style={
                     location === PAGES.DASHBOARD
-                      ? { color: '#158370' }
+                      ? { color: '#ffffff9e', background: "#ffffff1a", padding: "8px", borderRadius: "8px" }
                       : { color: 'gray' }
                   }
                 >
@@ -79,19 +99,65 @@ const NavBar = () => {
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              {/* <NavigationMenuItem>
+              <NavigationMenuItem>
                 <NavigationMenuLink
-                  href={PAGES.TESTVIEW}
-                  active={location === PAGES.TESTVIEW}
+                  href={PAGES.SEO}
+                  active={location === PAGES.SEO}
                   style={
-                    location === PAGES.TESTVIEW
-                      ? { color: '#158370' }
+                    location === PAGES.SEO
+                      ? { color: '#ffffff9e', background: "#ffffff1a", padding: "5px", borderRadius: "8px" }
                       : { color: 'gray' }
                   }
                 >
-                  Testview
+                  SEO
                 </NavigationMenuLink>
-              </NavigationMenuItem> */}
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href={PAGES.ACQUISTION}
+                  active={location === PAGES.ACQUISTION}
+                  style={
+                    location === PAGES.ACQUISTION
+                      ? { color: '#ffffff9e', background: "#ffffff1a", padding: "5px", borderRadius: "8px" }
+                      : { color: 'gray' }
+                  }
+                >
+                  Acquisition
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+
+
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href={PAGES.CONVERSION}
+                  active={location === PAGES.CONVERSION}
+                  style={
+                    location === PAGES.CONVERSION
+                      ? { color: '#ffffff9e', background: "#ffffff1a", padding: "8px", borderRadius: "8px" }
+                      : { color: 'gray' }
+                  }
+                >
+                  Conversion
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  href={PAGES.SUGGESTION}
+                  active={location === PAGES.SUGGESTION}
+                  style={
+                    location === PAGES.SUGGESTION
+                      ? { color: '#ffffff9e', background: "#ffffff1a", padding: "8px", borderRadius: "8px" }
+                      : { color: 'gray' }
+                  }
+                >
+                  Suggestions
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+
               {/* Add more menu items as needed */}
             </NavigationMenuList>
             <NavigationMenuIndicator />
@@ -101,11 +167,14 @@ const NavBar = () => {
 
         </div>
 
-        <div className='flex flex-row items-center gap-5 mt-5 justify-end sm:mt-0 sm:pl-5'>
-          {/* <a className="font-medium text-blue-500" href="#" aria-current="page">Landing</a> */}
-          {/* <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500" href="#">Account</a> */}
-          {/* <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500" href="#">Work</a> */}
+        <div className='text-white'>
+
+          <div className="flex gap-2">
+            <p>Dami</p>
+            <img src={Personal} className='h-4 w-4 mt-1' />
+          </div>
         </div>
+
       </nav>
     </header>
   )
