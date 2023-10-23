@@ -66,6 +66,7 @@ const createChart = (data: number[], title: string, dataKey: string[]) => {
   )
 }
 
+<<<<<<< HEAD
 export interface ChartProps {
   id: string
 }
@@ -77,6 +78,14 @@ const Chart = ({ id }: ChartProps) => {
   const [chartData, setChartData] = useState([])
   const [engagementData, setEngagementData] = useState([])
   const [bounceData, setBounceData] = useState([])
+=======
+const Chart = (id: any) => {
+  const [notification, setNotification] = useState(null);
+  const [allData, setAllData] = useState([]);
+  const [chartData, setChartData] = useState([]);
+  const [engagementData, setEngagementData] = useState([]);
+  const [bounceData, setBounceData] = useState([]);
+>>>>>>> parent of 031190c (dynamic rendering with id and changes in test ui)
 
   const showNotification = (message: any) => {
     setNotification(message)
