@@ -44,6 +44,7 @@ export const options = {
 export default function App() {
   const [currentData, setCurrentData] = React.useState<ABTest[]>([])
   const [previousData, setPreviousData] = React.useState<ABTest[]>([])
+  const [cardView, setCardView] = React.useState(true);
   const [selectedTest, setSelectedTest] = React.useState<ABTest | undefined>(
     undefined
   )
@@ -98,6 +99,7 @@ export default function App() {
   function handleButtonClick(test: ABTest) {
     // Do something with the recordId, like recording it or using it in your application.
     console.log("Button clicked with record_id:", test.record_id)
+    setCardView(false);
     setSelectedTest(test)
 
     // const dashboardUrl = `dashboard/${recordId}`
@@ -107,6 +109,7 @@ export default function App() {
 
   return (
     <div className="p-5 bg-main min-w-screen min-h-screen">
+      {cardView && <>
       {currentData.length > 0 ? (
         <>
           {" "}
@@ -176,10 +179,18 @@ export default function App() {
       ) : (
         ""
       )}
+      </>}
 
-      <div className="grid grid-cols-2 gap-2">
+      {!cardView && <Button
+                      variant="outline"
+                      className="rounded-full bg-blue-800 text-white text-xs px-6 py-2 hover:bg-blue-700 hover:text-white border-0"
+                      onClick={() => setCardView(true)}
+                    >
+                      View Card
+                    </Button>}
+      {!cardView && <div className="grid grid-cols-2 gap-2">
         {selectedTest && <Chart id={selectedTest.record_id} />}
-      </div>
+      </div>}
     </div>
   )
 }
