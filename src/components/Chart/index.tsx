@@ -108,7 +108,7 @@ const Chart = ({ id }: ChartProps) => {
     } else {
       window.location.href = "/login"
     }
-  }, [])
+  }, [id])
 
   useEffect(() => {
     if (allData.length > 0) {
