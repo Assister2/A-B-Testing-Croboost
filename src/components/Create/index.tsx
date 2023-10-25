@@ -249,54 +249,6 @@ const Create = () => {
                           )}
                         />
                       </div>
-                      <div className="...">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
-                              <FormControl>
-                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
-                                  required: "Name is required",
-                                })} />
-                              </FormControl>
-                              {errors.name && (
-                                <FormDescription className="text-red-500 text-xs">
-                                  {errors.name.message}
-                                </FormDescription>
-                              )}
-
-
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <div className="...">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
-                              <FormControl>
-                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
-                                  required: "Name is required",
-                                })} />
-                              </FormControl>
-                              {errors.name && (
-                                <FormDescription className="text-red-500 text-xs">
-                                  {errors.name.message}
-                                </FormDescription>
-                              )}
-
-
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
                     </div>
 
                     <div className="flex items-center gap-3.5 my-4">
