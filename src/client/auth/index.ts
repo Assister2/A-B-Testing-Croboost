@@ -32,6 +32,7 @@ export const postLogin = async (data: LoginData) => {
         throw new Error("Server Error");
     }
     const json = await response.json();
+    debugger
     storeTokens(json);
     return json as Tokens;
 }
