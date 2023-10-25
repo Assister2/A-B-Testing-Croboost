@@ -15,7 +15,6 @@ const Login = () => {
     e.preventDefault();
     postLogin({email, password})
     .then(res => {
-      console.log('OK')
       window.location.replace('/');
     })
     .catch(e => {
