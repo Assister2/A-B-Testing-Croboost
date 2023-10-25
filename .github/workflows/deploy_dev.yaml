@@ -1,9 +1,9 @@
-name: Build and Deploy Production
+name: Build and Deploy Dev / Testing
 
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   deploy:
@@ -22,6 +22,6 @@ jobs:
       - name: Build application
         run: npm run build
       - name: Deploy to S3
-        run: aws s3 sync ./dist/ s3://ab-website-static/
+        run: aws s3 sync ./dist/ s3://croboost-web-app-dev/
       - name: Create CloudFront invalidation
-        run: aws cloudfront create-invalidation --distribution-id E3MUM6UMBNCEGX --paths "/" "/dashboard" "/login" "/register" "/tests"
+        run: aws cloudfront create-invalidation --distribution-id E32FTV363Z84R5 --paths "/*"

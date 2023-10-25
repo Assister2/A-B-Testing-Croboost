@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import { postSignUp } from "../../client/auth";
+import { Button } from "@/components/ui/button"
+import "./Register.scss"
 
-import Button from "../components/Button";
 import Input from "../components/Input";
 
 const Register = () => {
@@ -73,7 +74,7 @@ const Register = () => {
               Back to Login
             </button>
             {/* <Button type="submit" text="Sign Up" onClick={handleRegisterSubmit}/> */}
-            <Button type="submit" text="Sign Up"/>
+            <Button type="submit"  className="mx-auto my-2 bg-button text-white p-3 w-36 rounded shadow-md disabled:bg-neutral-500 w-full">Sign Up </Button>
           </div>
         </form>
       </div>
