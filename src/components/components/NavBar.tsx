@@ -57,8 +57,8 @@ const NavBar = () => {
                     active={location === PAGES.HOME}
                     style={
                       location === PAGES.HOME
-                        ? { color: '#158370' }
-                        : { color: 'gray' }
+                        ? { color: 'gray', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px' }
+                        : { color: 'gray', borderRadius:'8px', padding:'8px'}
                     }
                   >
                     Home
@@ -70,8 +70,8 @@ const NavBar = () => {
                     active={location === PAGES.TESTS}
                     style={
                       location === PAGES.TESTS
-                        ? { color: '#158370' }
-                        : { color: 'gray' }
+                      ? { color: 'gray', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px' }
+                      : { color: 'gray', borderRadius:'8px', padding:'8px'}
                     }
                   >
                     Tests
@@ -84,8 +84,8 @@ const NavBar = () => {
                     active={location === PAGES.DASHBOARD}
                     style={
                       location === PAGES.DASHBOARD
-                        ? { color: '#158370' }
-                        : { color: 'gray' }
+                      ? { color: 'gray', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px' }
+                      : { color: 'gray', borderRadius:'8px', padding:'8px'}
                     }
                   >
                     Dashboard
