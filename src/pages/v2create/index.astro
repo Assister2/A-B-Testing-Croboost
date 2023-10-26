@@ -1,0 +1,19 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import V2create from '../../components/V2create';
+
+---
+<script>
+	import { loadTokens } from "../../utils";
+	var tokens = loadTokens();
+	if (!tokens || !tokens.id_token){
+		// window.location.replace("/login");
+		console.log(tokens);
+	}
+	else {
+		tokens = null;
+	}
+</script>
+<Layout title="Croboost">
+	<V2create client:load/>
+</Layout>

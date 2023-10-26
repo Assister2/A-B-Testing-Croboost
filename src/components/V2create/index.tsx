@@ -1,0 +1,363 @@
+// import AWS from "aws-sdk";
+import { createTest, deleteTest } from "../../client/abtest"
+import { IExperimentParameters, TEST_NAMES } from "./types"
+import { useEffect, useState, useRef } from "react"
+import { useForm, SubmitHandler } from "react-hook-form"
+import { javascript } from "@codemirror/lang-javascript"
+import { dracula } from "@uiw/codemirror-theme-dracula"
+import CodeMirror from "@uiw/react-codemirror"
+import type { Tokens } from "../../utils"
+import { loadTokens } from "../../utils"
+import "./Create.scss"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+
+
+const getUnixTime = () => Math.trunc(new Date().getTime() / 1000)
+const V2create = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    getValues,
+    setValue,
+  } = useForm<IExperimentParameters>({
+    defaultValues: {
+      id: `ex${getUnixTime()}`,
+      name: "",
+      trigger: `function (test) { if (document.location.pathname === '/') test.activate(); }`,
+      sampleRate: 1.0,
+      Original: {
+        codeJS: `const url = new URL(window.location.href);
+        url.searchParams.set('_ab_croboost', '${TEST_NAMES[0].toLowerCase()}');
+        window.history.pushState({ path: url.href }, '', url.href);`,
+        codeCSS: `.accent-bg-color {
+          background-color: #158370 !important;
+        }`,
+      },
+      Variant: {
+        codeJS: `const url = new URL(window.location.href);
+        url.searchParams.set('_ab_croboost', '${TEST_NAMES[1].toLowerCase()}');
+        window.history.pushState({ path: url.href }, '', url.href);`,
+        codeCSS: `.accent-bg-color {
+          background-color: #7426ab !important;
+        }`,
+      },
+    },
+  })
+  const formWatch = watch()
+  const [showOutput, setShowOutput] = useState<boolean>(false)
+  const [userData, setUserData] = useState<Tokens | undefined>(undefined)
+  const [updated, setUpdated] = useState<boolean>(false)
+  const [tab, setTab] = useState<"Original" | "Variant">("Original")
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    const tokens = loadTokens()
+    if (tokens) {
+      setUserData(tokens)
+    } else {
+      window.location.href = "/login"
+    }
+  }, [updated])
+  const constructSnowplowStorageAdapter = () => `{
+      onExposure: function(obj){
+        snowplow('trackSelfDescribingEvent', {
+          event: {
+            schema: 'iglu:io.mintmetrics.mojito/mojito_exposure/jsonschema/1-0-0',
+            data: {
+              'waveId': obj.options.id,
+              'waveName': obj.options.name,
+              'recipe': obj.chosenRecipe.name
+            }
+          }
+        });
+      },
+      onVeilTimeout: function(obj, ultimateRecipe){},
+      onRecipeFailure: function(obj, err){
+        snowplow('trackSelfDescribingEvent', {
+          event: {
+            schema: 'iglu:io.mintmetrics.mojito/mojito_failure/jsonschema/1-0-0',
+            data: {
+              'waveId': obj.options.id,
+              'waveName': obj.options.name,
+              'component': obj.chosenRecipe.name || 'trigger',
+              'error': err
+            }
+          }
+        });
+        // Refresh the page unless we're in a trigger or preview mode
+        var preview = document.location.search.indexOf('mojito_' + obj.options.id + '=' + obj.chosenRecipe.id) > -1;
+        if (obj.chosenRecipe.name && !obj.options.divertTo && !preview) {
+          // Disable the experiment on future page loads, and refresh
+          Mojito.Cookies.set('_mojito_' + obj.options.id + (obj.options.state === 'live'?'':'-staging'), '0.0');
+          setTimeout(function(){
+            window.location.reload();
+          }, 500);
+        }
+      }
+    }`
+  const constructTest = ({
+    id,
+    name,
+    trigger,
+    sampleRate,
+    Original,
+    Variant,
+  }: IExperimentParameters) =>
+    `Mojito.addTest({
+  id: "${id}",
+  name: "${name}",
+  sampleRate: ${sampleRate},
+  state: "live",
+  trigger: ${trigger},
+  recipes: {
+    "0": {
+      name: "Original",
+      ${Original.codeJS &&
+    `js: function () {
+        ${Original.codeJS}
+      },`
+    }
+      ${Original.codeCSS && `css: \`${Original.codeCSS}\`,`}
+    },
+  ${[Variant]
+      .map(
+        (plan, i) => `
+    "${i + 1}": {
+      name: "${TEST_NAMES[i + 1]}",
+      ${plan.codeJS &&
+          `js: function () {
+        ${plan.codeJS}
+      },`
+          }
+      ${plan.codeCSS && `css: \`${plan.codeCSS}\`,`}
+    },`
+      )
+      .join("\n")}
+  },
+  options: {
+    storageAdapter: ${constructSnowplowStorageAdapter()}
+  }
+});`
+  const generateTest = async (data: IExperimentParameters) => {
+    const mojitoOutput = constructTest(data)
+    if (userData) {
+      const res = await createTest(userData.id_token, data.name, mojitoOutput)
+      res && setUpdated(!updated)
+      console.log(mojitoOutput)
+      alert(`OK: ${res.title}`)
+    }
+  }
+
+  const FormSchema = z.object({
+    name: z.string().min(2, {
+      message: "Name must be at least 2 characters.",
+    }).refine((value) => value.trim() !== "", {
+      message: "Name is required",
+    }),
+    id: z.number().refine((value) => value !== null, {
+      message: "ID is required",
+    }),
+    sampleRate: z
+      .number()
+      .refine((value) => value !== null && value >= 0 && [1, 0.1, 0.5].includes(value), {
+        message:
+          "Sample rate must be a non-negative number and can only be 0.1, 0.5, or 1.",
+      }),
+  });
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  })
+
+
+
+  return (
+    <div className="p-4 min-w-screen min-h-screen bg-[#132632]">
+      <h1 className="font-bold text-2xl text-white">Create A/B Test</h1>
+      <div className="flex flex-col md:flex-row my-4 gap-4">
+        <div className="flex-auto w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+          <div className="h-full flex flex-col">
+            <Card className="w-full bg-white p-5 border-none flex-grow">
+              <CardHeader className="">
+                <CardTitle className="font-bold text-lg leading-4">Create Test</CardTitle>
+              </CardHeader>
+              <CardContent className="">
+                <Form {...form}>
+                  <form
+                    onSubmit={handleSubmit(generateTest)}
+                  >
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="...">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
+                              <FormControl>
+                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
+                                  required: "Name is required",
+                                })} />
+                              </FormControl>
+                              {errors.name && (
+                                <FormDescription className="text-red-500 text-xs">
+                                  {errors.name.message}
+                                </FormDescription>
+                              )}
+
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3.5 my-4">
+                      <Tabs defaultValue="a" className="createTest w-full">
+                        <TabsList className="grid w-full grid-cols-2 p-0 text-base font-medium leading-4">
+                          <TabsTrigger value="a" className="text-[#606060] p-2">Variant A</TabsTrigger>
+                          <TabsTrigger value="b" className="text-[#606060] p-2">Variant B</TabsTrigger>
+                        </TabsList>
+
+                        <TabsContent value="a" className="py-5">
+                          <section className={`mb-2 grid grid-cols-2 gap-2`}>
+                            <section className={`flex flex-col`}>
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">CSS</Label>
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeCSS")} />
+
+                            </section>
+                            <section className={`flex flex-col`}>
+
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">JavaScript</Label>
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeJS")} />
+
+                            </section>
+
+                          </section>
+                        </TabsContent>
+
+                        <TabsContent value="b" className="py-5">
+                          <section className={`mb-2 grid grid-cols-2 gap-2`}>
+                            <section className={`flex flex-col`}>
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">CSS2</Label>
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeCSS")} />
+
+                            </section>
+                            <section className={`flex flex-col`}>
+
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">JavaScript2</Label>
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeJS")} />
+
+                            </section>
+
+                          </section>
+                        </TabsContent>
+
+                      </Tabs>
+                    </div>
+
+                    <Button
+                      id="submit-test-button"
+                      className="mx-auto my-2 bg-button accent-bg-color text-white p-3 w-36 rounded shadow-md disabled:bg-neutral-500 w-full"
+                      type={"submit"}
+                    >
+                      Confirm A/B Test
+                    </Button>
+                  </form>
+                </Form>
+              </CardContent>
+
+            </Card>
+          </div>
+        </div>
+        <div className="flex-auto w-full md:w-1/2 lg:w-2/3 xl:w-1/4">
+          <div className="h-full flex flex-col">
+            <Card className="w-full bg-[#00000042] border-none p-5 flex-grow">
+              <CardHeader className="">
+                <CardTitle className="font-bold text-lg leading-4 text-white">Screenshots</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2">
+                    <Tabs defaultValue="a" className="screenShot w-full">
+                      <TabsList className="grid w-full grid-cols-2 text-base font-medium leading-4 p-0">
+                        <TabsTrigger value="a" className="text-[#ffffff9e]">Variant A</TabsTrigger>
+                        <TabsTrigger value="b" className="text-[#ffffff9e]">Variant B</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="a">
+                        <Card className="border-dashed border-2 rounded-none">
+                          <CardHeader>
+                            <CardTitle className="text-white">Variant A</CardTitle>
+                          </CardHeader>
+                        </Card>
+                      </TabsContent>
+                      <TabsContent value="b">
+                        <Card className="border-dashed border-2 rounded-none">
+                          <CardHeader>
+                            <CardTitle className="text-white">Variant B</CardTitle>
+                          </CardHeader>
+                        </Card>
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+                  <div className="md:col-span-1">
+                    <Card className="w-full bg-[#00000042] border-none p-5">
+                      <CardHeader className="">
+                        <CardTitle className="font-bold text-lg leading-4 text-white">Screenshots</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
+export default V2create
