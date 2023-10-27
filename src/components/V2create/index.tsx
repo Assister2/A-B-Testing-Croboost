@@ -1,6 +1,6 @@
 // import AWS from "aws-sdk";
-import { createTest, deleteTest } from "../../client/abtest"
-import { IExperimentParameters, TEST_NAMES } from "./types"
+import { createV2Test, deleteTest } from "../../client/abtest"
+import { IExperimentParameters2, TEST_NAMES } from "./types"
 import { useEffect, useState, useRef } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { javascript } from "@codemirror/lang-javascript"
@@ -50,7 +50,7 @@ import {
 
 
 const getUnixTime = () => Math.trunc(new Date().getTime() / 1000)
-const V2create = () => {
+const Create = () => {
   const {
     register,
     handleSubmit,
@@ -58,11 +58,10 @@ const V2create = () => {
     formState: { errors },
     getValues,
     setValue,
-  } = useForm<IExperimentParameters>({
+  } = useForm<IExperimentParameters2>({
     defaultValues: {
-      id: `ex${getUnixTime()}`,
       name: "",
-      trigger: `function (test) { if (document.location.pathname === '/') test.activate(); }`,
+      trigger: {path_name:''},
       sampleRate: 1.0,
       Original: {
         codeJS: `const url = new URL(window.location.href);
@@ -140,49 +139,37 @@ const V2create = () => {
     sampleRate,
     Original,
     Variant,
-  }: IExperimentParameters) =>
-    `Mojito.addTest({
-  id: "${id}",
-  name: "${name}",
-  sampleRate: ${sampleRate},
-  state: "live",
-  trigger: ${trigger},
-  recipes: {
-    "0": {
-      name: "Original",
-      ${Original.codeJS &&
-    `js: function () {
-        ${Original.codeJS}
-      },`
-    }
-      ${Original.codeCSS && `css: \`${Original.codeCSS}\`,`}
-    },
-  ${[Variant]
-      .map(
-        (plan, i) => `
-    "${i + 1}": {
-      name: "${TEST_NAMES[i + 1]}",
-      ${plan.codeJS &&
-          `js: function () {
-        ${plan.codeJS}
-      },`
-          }
-      ${plan.codeCSS && `css: \`${plan.codeCSS}\`,`}
-    },`
-      )
-      .join("\n")}
-  },
-  options: {
-    storageAdapter: ${constructSnowplowStorageAdapter()}
-  }
-});`
-  const generateTest = async (data: IExperimentParameters) => {
+  }: IExperimentParameters2) =>{
+    const variantJS = Variant.codeJS;
+    const variantCSS = Variant.codeCSS
+  return {name: name,
+        sampleRate: sampleRate,
+        state: "live",
+        trigger: trigger,
+        recipes: [
+          {
+            name: "Original",
+            js: `function () {${Original.codeJS}}`,
+            css: `${Original.codeCSS}`
+          },
+          {
+            name: "Variant",
+            js: `function () {
+              ${variantJS}
+            }`,
+            css: `${variantCSS}`
+          },
+        ]
+        }
+  
+}
+  const generateTest = async (data: IExperimentParameters2) => {
     const mojitoOutput = constructTest(data)
     if (userData) {
-      const res = await createTest(userData.id_token, data.name, mojitoOutput)
+      const res = await createV2Test(userData.id_token, mojitoOutput)
       res && setUpdated(!updated)
       console.log(mojitoOutput)
-      alert(`OK: ${res.title}`)
+      alert(`OK: success`)
     }
   }
 
@@ -356,8 +343,221 @@ const V2create = () => {
         </div>
 
       </div>
+
+      {/* <Form {...form}>
+        <form
+          className="container mx-auto flex flex-col items-center"
+          onSubmit={handleSubmit(generateTest)}
+        >
+
+          <h1 className="font-bold text-2xl text-black my-5">Create A/B Test</h1>
+          <section className="flex flex-col gap-2 w-full lg:w-3/5 bg-white rounded p-4">
+            <section className={`mb-2 grid grid-cols-3 gap-2`}>
+              <section className={`flex flex-col`}>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
+                      <FormControl>
+                        <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
+                          required: "Name is required",
+                        })} />
+                      </FormControl>
+                      {errors.name && (
+                        <FormDescription className="text-red-500 text-xs">
+                          {errors.name.message}
+                        </FormDescription>
+                      )}
+
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+              </section>
+              <section className={`flex flex-col`}>
+                <FormField
+                  control={form.control}
+                  name="id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-label text-sm mb-3">ID</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="border border-text-input rounded py-3 px-4 text-sm text-black"
+                          {...field}
+                          defaultValue="ex1696833655"
+                          {...register("id", {
+                            required: "ID is required",
+                            pattern: {
+                              value: /^[a-zA-Z0-9-_]+$/,
+                              message: "ID must be alphanumeric, dash or underscore",
+                            },
+                          })}
+                        />
+                      </FormControl>
+                      {errors.id && (
+                        <FormDescription className="text-red-500 text-xs">
+                          {errors.id.message}
+                        </FormDescription>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+
+              </section>
+              <section className={`flex flex-col`}>
+                <FormField
+                  control={form.control}
+                  name="sampleRate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-label text-sm mb-3">Sample Rate</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          className="border border-text-input rounded py-3 px-4 text-sm text-black"
+                          {...field}
+                          {...register("sampleRate", {
+                            min: {
+                              value: 0,
+                              message: "Sample Rate must be greater than 0",
+                            },
+                            max: {
+                              value: 1,
+                              message: "Sample Rate must be less than 1",
+                            },
+                          })}
+                          min="0"
+                          max="1"
+                          step="0.05"
+                          defaultValue={1}
+                        />
+                      </FormControl>
+                      {errors.sampleRate && (
+                        <FormDescription className="text-red-500 text-xs">
+                          {errors.sampleRate.message}
+                        </FormDescription>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+
+              </section>
+            </section>
+          </section>
+          <section className="mt-4 flex flex-col gap-2 w-full lg:w-3/5 bg-white rounded p-4">
+            <div className="">
+              <Tabs defaultValue="original" className="w-full">
+                <TabsList className="tabData grid w-full grid-cols-2 ">
+                  <TabsTrigger value="original">Original (A)</TabsTrigger>
+                  <TabsTrigger value="variant">Variant (B)</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="original" className="py-5">
+                  <section className={`mb-2 grid grid-cols-2 gap-2`}>
+                    <section className={`flex flex-col`}>
+
+                      <Label htmlFor="message-2" className="text-label text-sm mb-3">Original JavaScript</Label>
+                      <Textarea placeholder="Type your message here." id="message-2" rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-black"   {...register("Original.codeJS")} />
+
+                    </section>
+                    <section className={`flex flex-col`}>
+                      <Label htmlFor="message-2" className="text-label text-sm mb-3">Original CSS</Label>
+                      <Textarea placeholder="Type your message here." id="message-2" rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-black"   {...register("Original.codeCSS")} />
+
+                    </section>
+                  </section>
+                </TabsContent>
+
+                <TabsContent value="variant" className="py-5">
+                  <section className={`mb-2 grid grid-cols-2 gap-2`}>
+                    <section className={`flex flex-col`}>
+                      <Label htmlFor="variant" className="text-label text-sm mb-3">Variant JavaScript</Label>
+                      <Textarea placeholder="Type your message here." id="variant" rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-black"   {...register("Variant.codeJS")} />
+
+                    </section>
+                    <section className={`flex flex-col`}>
+                      <Label htmlFor="css" className="text-label text-sm mb-3">Variant CSS</Label>
+                      <Textarea placeholder="Type your message here." id="css" rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-black"   {...register("Variant.codeCSS")} />
+
+                    </section>
+                  </section>
+                </TabsContent>
+
+              </Tabs>
+              
+            </div>
+            
+          </section>
+          <section className="mt-4 flex flex-col gap-2 w-full lg:w-3/5 bg-white rounded p-4">
+          
+            <Button
+              type={"button"}
+              onClick={() => {
+                setShowOutput((prev) => !prev)
+                // delay 1 sec and scroll into view
+                setTimeout(() => {
+                  toggleRef.current?.scrollIntoView({ behavior: "smooth" })
+                }, 100)
+              }}
+              className="text-gray-600 dark:text-gray-600 pt-1 shadow-none"
+            >
+              <span>{showOutput ? "Hide" : "Show Current Test"}</span>
+            </Button>
+            <section ref={toggleRef}>
+              {showOutput && (
+                <section className={`mb-2 flex flex-col`}>
+                  <label className="text-label text-sm mb-2">Edit Trigger</label>
+                  <CodeMirror
+                    theme={dracula}
+                    extensions={[javascript()]}
+                    value={formWatch.trigger}
+                    {...register("trigger", { required: "Trigger is required." })}
+                    onChange={(value) => {
+                      setValue("trigger", value)
+                    }}
+                  />
+                  {errors.trigger && (
+                    <p className="text-red-500 text-xs">
+                      {errors.trigger.message}
+                    </p>
+                  )}
+                </section>
+              )}
+              {showOutput && formWatch && (
+                <section className={`mb-2 flex flex-col`}>
+                  <label className="text-label text-sm mb-2">View Output</label>
+                  <CodeMirror
+                    height={"300px"}
+                    value={constructTest(getValues())}
+                    extensions={[javascript()]}
+                    theme={dracula}
+                    editable={false}
+                  />
+                </section>
+              )}
+            </section>
+            <Button
+              id="submit-test-button"
+              className="mx-auto my-2 bg-button accent-bg-color text-white p-3 w-36 rounded shadow-md disabled:bg-neutral-500 w-full"
+              type={"submit"}
+            >
+              Confirm Test
+            </Button>
+          </section>
+        </form>
+      </Form> */}
+
     </div>
   )
 }
 
-export default V2create
+export default Create
