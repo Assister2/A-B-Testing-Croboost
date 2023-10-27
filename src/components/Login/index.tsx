@@ -1,6 +1,7 @@
-import Button from "../components/Button";
+import { Button } from "@/components/ui/button"
 import Input from "../components/Input";
 import { useEffect, useState } from "react";
+import "./Login.scss"
 
 import { postLogin } from "../../client/auth";
 
@@ -14,7 +15,6 @@ const Login = () => {
     e.preventDefault();
     postLogin({email, password})
     .then(res => {
-      console.log('OK')
       window.location.replace('/');
     })
     .catch(e => {
@@ -58,7 +58,8 @@ const Login = () => {
             >
               Sign Up
             </button>
-            <Button text="Sign In" type="submit" />
+            <Button type="submit" className="mx-auto my-2 bg-button text-white p-3  rounded shadow-md disabled:bg-neutral-500 w-full">Sign In</Button>
+            {/* mx-auto my-2 bg-button text-white p-3 w-36 rounded shadow-md disabled:bg-neutral-500 w-full */}
           </div>
         </form>
       </div>

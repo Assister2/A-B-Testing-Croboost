@@ -4,5 +4,24 @@ npm run dev
 
 Web application to create AB tests, analytics dashboards, etc.
 
+## Dev
 
-https://docs.snowplow.io/docs/collecting-data/collecting-from-own-applications/javascript-trackers/javascript-tracker/javascript-tracker-v3/tracking-events/#enableactivitytracking
+```sh
+npm install && npm run dev
+
+```
+
+## @libs/utils
+
+```shdcn
+npx shadcn-ui@latest init
+
+```
+
+## Tech Stack
+
+Using Astro as meta-framework, React as UI library, Tailwind. ReactJS for dashboards.
+
+Other Documentation:
+
+- Creating Mojito Test Object: https://mojito.mx/docs/js-delivery-test-object

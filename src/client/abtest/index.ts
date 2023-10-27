@@ -98,3 +98,38 @@ export const updateTest = async (
   // const data2 = await response.json()
   return { status: "OK" }
 }
+
+
+export const getChartData = async (token: string,id:any): Promise<any> => {
+  const url = `${API_ROOT}/metrics/${id}`
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  const data = await response.json()
+  return data
+}
+
+
+export const getUserData = async () => {
+   const tokens: any = localStorage.getItem('ab-website-tokens');
+   const parsedTokens = JSON.parse(tokens);
+  
+   const url = `${API_ROOT}/ab/tests/`
+
+     const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${parsedTokens?.id_token}`,
+    },
+  })
+  const data = await response.json()
+  console.log(data)
+  return parsedTokens?.id_token
+}
+
+
