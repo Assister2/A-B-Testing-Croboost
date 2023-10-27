@@ -279,13 +279,13 @@ const Create = () => {
                           <section className={`mb-2 grid grid-cols-2 gap-2`}>
                             <section className={`flex flex-col`}>
                               <Label htmlFor="message-2" className="text-label text-sm mb-3">CSS2</Label>
-                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeCSS")} />
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Variant.codeCSS")} />
 
                             </section>
                             <section className={`flex flex-col`}>
 
                               <Label htmlFor="message-2" className="text-label text-sm mb-3">JavaScript2</Label>
-                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeJS")} />
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Variant.codeJS")} />
 
                             </section>
 
