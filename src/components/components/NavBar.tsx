@@ -17,6 +17,7 @@ const PAGES = {
   DASHBOARD: "/dashboard",
   TESTS: "/tests",
   TESTVIEW: "/testview",
+  V2CREATE: '/v2create'
 }
 
 const logOut = () => {
@@ -89,6 +90,20 @@ const NavBar = () => {
                     }
                   >
                     Dashboard
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    href={PAGES.V2CREATE}
+                    active={location === PAGES.V2CREATE}
+                    style={
+                      location === PAGES.V2CREATE
+                      ? { color: 'gray', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px' }
+                      : { color: 'gray', borderRadius:'8px', padding:'8px'}
+                    }
+                  >
+                    V2Create
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
