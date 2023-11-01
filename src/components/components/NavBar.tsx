@@ -17,7 +17,7 @@ const PAGES = {
   DASHBOARD: "/dashboard",
   TESTS: "/tests",
   TESTVIEW: "/testview",
-  V2CREATE: '/v2create'
+  // V2CREATE: '/v2create'
 }
 
 const logOut = () => {
@@ -93,7 +93,7 @@ const NavBar = () => {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                <NavigationMenuItem>
+                {/* <NavigationMenuItem>
                   <NavigationMenuLink
                     href={PAGES.V2CREATE}
                     active={location === PAGES.V2CREATE}
@@ -105,7 +105,7 @@ const NavBar = () => {
                   >
                     V2Create
                   </NavigationMenuLink>
-                </NavigationMenuItem>
+                </NavigationMenuItem> */}
 
                 {/* <NavigationMenuItem>
                   <NavigationMenuLink
