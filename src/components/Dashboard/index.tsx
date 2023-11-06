@@ -109,10 +109,12 @@ export default function App() {
 
   return (
     <div className="p-5 bg-[#132632] min-w-screen min-h-screen">
+      <a className="flex-none text-md font-semibold text-white bg-[#522646] p-3.5 leading-4 rounded-xl ml-4 mb-5" href={'/'}>Create Test</a>
       {cardView && <>
       {currentData.length > 0 ? (
         <>
           {" "}
+
           <h5 className="mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
             Live Tests
           </h5>
