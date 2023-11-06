@@ -1,4 +1,4 @@
-import { API_ROOT, V2_API_ROOT } from "../../constants"
+import { API_ROOT } from "../../constants"
 
 export interface ABTest {
   iso_created_at: string
@@ -58,26 +58,6 @@ export const createTest = async (
   const json = await response.json()
   return json
 }
-export const createV2Test = async (
-  token: string,
-  data?: object
-): Promise<ABTest> => {
-  const url = `${V2_API_ROOT}/mojito_tests/`
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      "is_live":false,
-      "mojito_object_root": data,
-    }),
-  })
-  const json = await response.json()
-  return json
-}
-
 export const deleteTest = async (
   token: string,
   recordId: string
