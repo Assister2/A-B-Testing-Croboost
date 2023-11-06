@@ -108,23 +108,21 @@ export default function App() {
   }
 
   return (
-    <div className="p-5 bg-[#132632] min-w-screen min-h-screen">
-      <a className="flex-none text-md font-semibold text-white bg-[#522646] p-3.5 leading-4 rounded-xl ml-4 mb-5" href={'/'}>Create Test</a>
+    <div className="p-5 bg-main min-w-screen min-h-screen">
       {cardView && <>
       {currentData.length > 0 ? (
         <>
           {" "}
-
-          <h5 className="mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
-            Live Tests
+          <h5 className="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white ml-4">
+            Current A/B Tests
           </h5>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-6 gap-3 ml-4">
             {currentData.map((test, index) => {
               // const cardId = uuidv4();
               return (
-                <Card className="w-full rounded-[7.746px] bg-[#00000042] text-white border-0" key={index}>
+                <Card className="w-full rounded-xl" key={index}>
                   <CardHeader>
-                    <CardTitle className="text-2xl font-normal capitalize ">
+                    <CardTitle className="text-2xl font-normal capitalize">
                       {test.title} Test
                     </CardTitle>
                     <CardDescription className="text-sm font-bold">
@@ -134,7 +132,7 @@ export default function App() {
                   <CardFooter className="flex justify-between">
                     <Button
                       variant="outline"
-                      className="rounded-[4px] bg-white hover:bg-[#FFFFFF33] text-[14px] font-bold text-black hover:text-black px-6 py-2 border-0"
+                      className="rounded-full bg-blue-800 text-white text-xs px-6 py-2 hover:bg-blue-700 hover:text-white border-0"
                       onClick={() => handleButtonClick(test)}
                     >
                       View Data
@@ -151,12 +149,12 @@ export default function App() {
 
       {previousData.length > 0 ? (
         <div className="mt-5">
-          <h5 className="mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
-            Ended Tests
+          <h5 className="mb-5 text-2xl font-bold tracking-tight text-gray-900 dark:text-white ml-4">
+            Previous A/B Tests
           </h5>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-6 gap-3 ml-4">
             {previousData.map((test, index) => (
-              <Card className="w-full  rounded-[7.746px] bg-[#00000042] text-white border-0" key={index}>
+              <Card className="w-full rounded-xl" key={index}>
                 <CardHeader>
                   <CardTitle className="text-2xl font-normal capitalize">
                     {test.title} Test
@@ -168,7 +166,7 @@ export default function App() {
                 <CardFooter className="flex justify-between">
                   <Button
                     variant="outline"
-                    className="rounded-[4px] bg-white hover:bg-[#FFFFFF33] text-[14px] font-bold text-black hover:text-black px-6 py-2 border-0"
+                    className="rounded-full bg-blue-800 text-white text-xs px-6 py-2 hover:bg-blue-700 hover:text-white border-0"
                     onClick={() => handleButtonClick(test)}
                   >
                     View Data
@@ -183,10 +181,14 @@ export default function App() {
       )}
       </>}
 
-      {!cardView && <div className="text-[12px] leading-6 underline text-white cursor-pointer" onClick={() => setCardView(true)}>
-                      Back to all live tests
-                    </div>}
-      {!cardView && <div className="w-full">
+      {!cardView && <Button
+                      variant="outline"
+                      className="rounded-full bg-blue-800 text-white text-xs px-6 py-2 hover:bg-blue-700 hover:text-white border-0"
+                      onClick={() => setCardView(true)}
+                    >
+                      View Card
+                    </Button>}
+      {!cardView && <div className="grid grid-cols-2 gap-2">
         {selectedTest && <Chart id={selectedTest.record_id} />}
       </div>}
     </div>
