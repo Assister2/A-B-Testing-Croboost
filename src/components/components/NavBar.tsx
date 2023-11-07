@@ -53,10 +53,10 @@ const NavBar = () => {
             <img src="/croboostButton.svg"/>
           </a>
         </div>
-        <nav className="w-full mx-auto px-4 grid grid-cols-3 items-center justify-between">
-          <div className="flex flex-row gap-6 mt-5 justify-start sm:mt-0 sm:pl-5">
+        <nav className="w-full mx-auto grid grid-cols-3 items-center justify-between">
+          <div className="flex flex-row gap-[27px] mt-5 justify-start sm:mt-0 sm:pl-5">
             <NavigationMenu className='flex justify-between'>
-              <NavigationMenuList className="space-x-4">
+              <NavigationMenuList className="gap-2">
                 {/* <NavigationMenuItem>
                   <NavigationMenuLink
                     href={PAGES.HOME}
