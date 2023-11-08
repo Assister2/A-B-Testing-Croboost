@@ -271,7 +271,7 @@ const Create = () => {
                             </FormItem>
                           )}
                         />
-
+                      </div>
                     </div>
                     <p className="font-bold text-[16px] leading-4 mt-[21px]">Variants</p>
                     <div className="flex items-center gap-3.5 my-4">
