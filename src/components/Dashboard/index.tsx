@@ -108,8 +108,10 @@ export default function App() {
   }
 
   return (
+
     <div className="p-5 bg-[#132632] min-w-screen min-h-screen">
       <a className="flex w-[134px] p-2 justify-center items-center gap-[10px] absolute right-[31px] top-[69px] rounded-[4px] bg-[#10503D] text-white text-[12px] font-bold hover:bg-opacity-50" href={'/create'}>New A/B Test</a>
+
       {cardView && <>
       {currentData.length > 0 ? (
         <>
