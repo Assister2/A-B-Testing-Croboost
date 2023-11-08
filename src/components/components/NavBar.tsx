@@ -17,6 +17,7 @@ const PAGES = {
   DASHBOARD: "/dashboard",
   TESTS: "/tests",
   TESTVIEW: "/testview",
+  // V2CREATE: '/v2create'
 }
 
 const logOut = () => {
@@ -26,6 +27,7 @@ const logOut = () => {
 const NavBar = () => {
   const [location, setLocation] = useState(PAGES.HOME);
   const [buttonVisible, setButtonVisible] = useState(true);
+  const [buttonIsHovered, setButtonHovered] = useState(false);
   useEffect(() => {
     setLocation(window.location.pathname);
   }, []);
@@ -41,58 +43,93 @@ const NavBar = () => {
     else 
       setButtonVisible(false);
   },[])
+
   return (
     <header className="flex flex-wrap justify-center sm:flex-nowrap z-50 w-full  text-md py-4" style={headerStyle}>
       <div className='flex justify-between w-full items-center'>
         <div className='flex flex-row items-center gap-5 mt-5 justify-center sm:mt-0 sm:pl-5'>
-          <a className="flex-none text-xl font-semibold text-white bg-[#522646] p-3.5 leading-4 rounded-xl" href={PAGES.HOME}>Croboost</a>
+          {/* <a className="flex-none text-xl font-semibold text-white bg-[#522646] p-3.5 leading-4 rounded-xl" href={PAGES.HOME}>Croboost</a> */}
+          <a href={PAGES.HOME}>
+            <img src="/croboostButton.svg"/>
+          </a>
         </div>
         <nav className="w-full mx-auto grid grid-cols-3 items-center justify-between">
           <div className="flex flex-row gap-[27px] mt-5 justify-start sm:mt-0 sm:pl-5">
             <NavigationMenu className='flex justify-between'>
-
               <NavigationMenuList className="gap-2">
                 {/* <NavigationMenuItem>
-
                   <NavigationMenuLink
                     href={PAGES.HOME}
                     active={location === PAGES.HOME}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = location === PAGES.HOME ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                    }}
                     style={
-                      location === PAGES.HOME
-                        ? { color: '#158370' }
-                        : { color: 'gray' }
+                      location === PAGES.HOME  
+                        ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
+                        : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex' }
                     }
                   >
                     Home
+                  </NavigationMenuLink>
+                </NavigationMenuItem> */}
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    href={PAGES.DASHBOARD}
+                    active={location === PAGES.DASHBOARD}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
+                    }}
+                    onMouseLeave={(e) => {
+                       e.currentTarget.style.backgroundColor = location === PAGES.DASHBOARD ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                    }}
+                    style={
+                      location === PAGES.DASHBOARD  
+                      ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
+                      : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
+                    }
+                  >
+                    Tests
                   </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink
                     href={PAGES.TESTS}
                     active={location === PAGES.TESTS}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = location === PAGES.TESTS ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                    }}
                     style={
-                      location === PAGES.TESTS
-                        ? { color: '#158370' }
-                        : { color: 'gray' }
+                      location === PAGES.TESTS 
+                      ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
+                      : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
                     }
                   >
-                    Tests
+                    Code
                   </NavigationMenuLink>
                 </NavigationMenuItem>
 
-                <NavigationMenuItem>
+               
+
+                {/* <NavigationMenuItem>
                   <NavigationMenuLink
-                    href={PAGES.DASHBOARD}
-                    active={location === PAGES.DASHBOARD}
+                    href={PAGES.V2CREATE}
+                    active={location === PAGES.V2CREATE}
                     style={
-                      location === PAGES.DASHBOARD
-                        ? { color: '#158370' }
-                        : { color: 'gray' }
+                      location === PAGES.V2CREATE
+                      ? { color: 'gray', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px' }
+                      : { color: 'gray', borderRadius:'8px', padding:'8px'}
                     }
                   >
-                    Dashboard
+                    V2Create
                   </NavigationMenuLink>
-                </NavigationMenuItem>
+                </NavigationMenuItem> */}
 
                 {/* <NavigationMenuItem>
                   <NavigationMenuLink

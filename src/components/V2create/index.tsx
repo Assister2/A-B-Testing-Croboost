@@ -1,6 +1,6 @@
 // import AWS from "aws-sdk";
-import { createTest, deleteTest } from "../../client/abtest"
-import { IExperimentParameters, TEST_NAMES } from "./types"
+import { createV2Test, deleteTest } from "../../client/abtest"
+import { IExperimentParameters2, TEST_NAMES } from "./types"
 import { useEffect, useState, useRef } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { javascript } from "@codemirror/lang-javascript"
@@ -58,11 +58,10 @@ const Create = () => {
     formState: { errors },
     getValues,
     setValue,
-  } = useForm<IExperimentParameters>({
+  } = useForm<IExperimentParameters2>({
     defaultValues: {
-      id: `ex${getUnixTime()}`,
       name: "",
-      trigger: `function (test) { if (document.location.pathname === '/') test.activate(); }`,
+      trigger: {path_name:''},
       sampleRate: 1.0,
       Original: {
         codeJS: `const url = new URL(window.location.href);
@@ -140,49 +139,37 @@ const Create = () => {
     sampleRate,
     Original,
     Variant,
-  }: IExperimentParameters) =>
-    `Mojito.addTest({
-  id: "${id}",
-  name: "${name}",
-  sampleRate: ${sampleRate},
-  state: "live",
-  trigger: ${trigger},
-  recipes: {
-    "0": {
-      name: "Original",
-      ${Original.codeJS &&
-    `js: function () {
-        ${Original.codeJS}
-      },`
-    }
-      ${Original.codeCSS && `css: \`${Original.codeCSS}\`,`}
-    },
-  ${[Variant]
-      .map(
-        (plan, i) => `
-    "${i + 1}": {
-      name: "${TEST_NAMES[i + 1]}",
-      ${plan.codeJS &&
-          `js: function () {
-        ${plan.codeJS}
-      },`
-          }
-      ${plan.codeCSS && `css: \`${plan.codeCSS}\`,`}
-    },`
-      )
-      .join("\n")}
-  },
-  options: {
-    storageAdapter: ${constructSnowplowStorageAdapter()}
-  }
-});`
-  const generateTest = async (data: IExperimentParameters) => {
+  }: IExperimentParameters2) =>{
+    const variantJS = Variant.codeJS;
+    const variantCSS = Variant.codeCSS
+  return {name: name,
+        sampleRate: sampleRate,
+        state: "live",
+        trigger: trigger,
+        recipes: [
+          {
+            name: "Original",
+            js: `function () {${Original.codeJS}}`,
+            css: `${Original.codeCSS}`
+          },
+          {
+            name: "Variant",
+            js: `function () {
+              ${variantJS}
+            }`,
+            css: `${variantCSS}`
+          },
+        ]
+        }
+  
+}
+  const generateTest = async (data: IExperimentParameters2) => {
     const mojitoOutput = constructTest(data)
     if (userData) {
-      const res = await createTest(userData.id_token, data.name, mojitoOutput)
+      const res = await createV2Test(userData.id_token, mojitoOutput)
       res && setUpdated(!updated)
       console.log(mojitoOutput)
-      alert(`OK: ${res.title}`)
+      alert(`OK: success`)
     }
   }
 
@@ -211,14 +198,13 @@ const Create = () => {
 
   return (
     <div className="p-4 min-w-screen min-h-screen bg-[#132632]">
-      <div className="max-w-[800px] mx-auto">
       <h1 className="font-bold text-2xl text-white">Create A/B Test</h1>
       <div className="flex flex-col md:flex-row my-4 gap-4">
         <div className="flex-auto w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
           <div className="h-full flex flex-col">
-            <Card className="w-full bg-[#0E1C25] border-[#4B4B4B] text-white border-solid border-[1px] p-5 flex-grow">
+            <Card className="w-full bg-white p-5 border-none flex-grow">
               <CardHeader className="">
-                <CardTitle className="font-bold text-[16px] leading-4">Details</CardTitle>
+                <CardTitle className="font-bold text-lg leading-4">Create Test</CardTitle>
               </CardHeader>
               <CardContent className="">
                 <Form {...form}>
@@ -226,15 +212,15 @@ const Create = () => {
                     onSubmit={handleSubmit(generateTest)}
                   >
                     <div className="grid grid-cols-2 gap-4">
-                   
+                      <div className="...">
                         <FormField
                           control={form.control}
                           name="name"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-label text-sm mb-3">Test Name</FormLabel>
+                              <FormLabel className="text-label text-sm mb-3">Name</FormLabel>
                               <FormControl>
-                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-[rgba(255, 255, 255, 0.80)] bg-[#212E36]" {...field} {...register("name", {
+                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-black" {...field} {...register("name", {
                                   required: "Name is required",
                                 })} />
                               </FormControl>
@@ -249,49 +235,27 @@ const Create = () => {
                             </FormItem>
                           )}
                         />
-                         <FormField
-                          control={form.control}
-                          name="sampleRate"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-label text-sm mb-3">Sample Rate</FormLabel>
-                              <FormControl>
-                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-white bg-[#212E36]" type="number" {...field} {...register("sampleRate", {
-                                  required: "SampleRate is required",
-                                })} />
-                              </FormControl>
-                              {errors.sampleRate && (
-                                <FormDescription className="text-red-500 text-xs">
-                                  {errors.sampleRate.message}
-                                </FormDescription>
-                              )}
-
-
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-      
+                      </div>
                     </div>
-                    <p className="font-bold text-[16px] leading-4 mt-[21px]">Variants</p>
+
                     <div className="flex items-center gap-3.5 my-4">
                       <Tabs defaultValue="a" className="createTest w-full">
-                        <TabsList className="w-full p-0 font-medium leading-4 flex justify-start gap-2">
-                          <TabsTrigger value="a" className="text-[#ffffff9e] p-2">Variant A</TabsTrigger>
-                          <TabsTrigger value="b" className="text-[#ffffff9e] p-2">Variant B</TabsTrigger>
+                        <TabsList className="grid w-full grid-cols-2 p-0 text-base font-medium leading-4">
+                          <TabsTrigger value="a" className="text-[#606060] p-2">Variant A</TabsTrigger>
+                          <TabsTrigger value="b" className="text-[#606060] p-2">Variant B</TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="a" className="py-5">
                           <section className={`mb-2 grid grid-cols-2 gap-2`}>
                             <section className={`flex flex-col`}>
                               <Label htmlFor="message-2" className="text-label text-sm mb-3">CSS</Label>
-                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-[#ffffffcc] bg-[#ffffff21]"   {...register("Original.codeCSS")} />
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeCSS")} />
 
                             </section>
                             <section className={`flex flex-col`}>
 
                               <Label htmlFor="message-2" className="text-label text-sm mb-3">JavaScript</Label>
-                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-[#ffffffcc] bg-[#ffffff21]"   {...register("Original.codeJS")} />
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeJS")} />
 
                             </section>
 
@@ -302,13 +266,13 @@ const Create = () => {
                           <section className={`mb-2 grid grid-cols-2 gap-2`}>
                             <section className={`flex flex-col`}>
                               <Label htmlFor="message-2" className="text-label text-sm mb-3">CSS2</Label>
-                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-[#ffffffcc] bg-[#ffffff21]"   {...register("Variant.codeCSS")} />
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeCSS")} />
 
                             </section>
                             <section className={`flex flex-col`}>
 
                               <Label htmlFor="message-2" className="text-label text-sm mb-3">JavaScript2</Label>
-                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-[#ffffffcc] bg-[#ffffff21]"   {...register("Variant.codeJS")} />
+                              <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-black bg-[#00000014]"   {...register("Original.codeJS")} />
 
                             </section>
 
@@ -317,55 +281,7 @@ const Create = () => {
 
                       </Tabs>
                     </div>
-                    <section className={ showOutput? "mt-4 flex flex-col gap-2 w-full bg-white rounded p-4" : "mt-4 flex flex-col gap-2 w-full bg-transparent rounded p-4"}>
-          
-                        <Button
-                          type={"button"}
-                          onClick={() => {
-                            setShowOutput((prev) => !prev)
-                            // delay 1 sec and scroll into view
-                            setTimeout(() => {
-                              toggleRef.current?.scrollIntoView({ behavior: "smooth" })
-                            }, 100)
-                          }}
-                          className={showOutput ?  "text-gray-600 dark:text-gray-600 pt-1 shadow-none" : "text-white  pt-1 shadow-none"}
-                        >
-                          <span>{showOutput ? "Hide" : "Show Current Test"}</span>
-                        </Button>
-                        <section ref={toggleRef}>
-                          {showOutput && (
-                            <section className={`mb-2 flex flex-col`}>
-                              <label className="text-label text-sm mb-2">Edit Trigger</label>
-                              <CodeMirror
-                                theme={dracula}
-                                extensions={[javascript()]}
-                                value={formWatch.trigger}
-                                {...register("trigger", { required: "Trigger is required." })}
-                                onChange={(value) => {
-                                  setValue("trigger", value)
-                                }}
-                              />
-                              {errors.trigger && (
-                                <p className="text-red-500 text-xs">
-                                  {errors.trigger.message}
-                                </p>
-                              )}
-                            </section>
-                          )}
-                          {showOutput && formWatch && (
-                            <section className={`mb-2 flex flex-col`}>
-                              <label className="text-label text-sm mb-2">View Output</label>
-                              <CodeMirror
-                                height={"300px"}
-                                value={constructTest(getValues())}
-                                extensions={[javascript()]}
-                                theme={dracula}
-                                editable={false}
-                              />
-                            </section>
-                          )}
-                        </section>
-                      </section>
+
                     <Button
                       id="submit-test-button"
                       className="mx-auto my-2 bg-button accent-bg-color text-white p-3 w-36 rounded shadow-md disabled:bg-neutral-500 w-full"
@@ -380,7 +296,7 @@ const Create = () => {
             </Card>
           </div>
         </div>
-        {/* <div className="flex-auto w-full md:w-1/2 lg:w-2/3 xl:w-1/4">
+        <div className="flex-auto w-full md:w-1/2 lg:w-2/3 xl:w-1/4">
           <div className="h-full flex flex-col">
             <Card className="w-full bg-[#00000042] border-none p-5 flex-grow">
               <CardHeader className="">
@@ -424,7 +340,7 @@ const Create = () => {
               </CardContent>
             </Card>
           </div>
-        </div> */}
+        </div>
 
       </div>
 
@@ -639,7 +555,7 @@ const Create = () => {
           </section>
         </form>
       </Form> */}
-    </div>
+
     </div>
   )
 }

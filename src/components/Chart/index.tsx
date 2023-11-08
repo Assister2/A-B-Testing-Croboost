@@ -19,43 +19,68 @@ const chartOptions = (chartTitle: string) => {
     indexAxis: "y" as const,
     elements: {
       bar: {
-        borderWidth: 2,
+        borderWidth: 3,
       },
     },
+    
     responsive: true,
     plugins: {
       legend: {
         position: "bottom" as const,
+        align: 'start',
       },
       title: {
-        display: true,
+        display: false,
         text: chartTitle, // Dynamic chart title
       },
       layout: {
         padding: {
-          top: 10,
-          bottom: 10,
+          top: 20,
+          bottom: 20,
         },
       },
     },
+    scales: {
+      x: {
+        grid: {
+          color: 'gray', // Set the color of the x-axis grid lines
+          borderWidth: 10, // Set the width of the x-axis grid lines
+        },
+        categoryPercentage: 0.8,
+        barPercentage: 0.8,
+      },
+      y: {
+        grid: {
+          color: 'gray',
+          borderWidth: 10,
+           // Set the color of the y-axis grid lines
+        },
+        ticks: {
+          display: false, // Hide the y-axis labels
+        },
+        categoryPercentage: 0.8,
+        barPercentage: 0.8,
+      },
+    }
   }
 }
 
 const createChart = (data: number[], title: string, dataKey: string[]) => {
-  const colors = ["#ff6347", "#006CA5"]
+  const colors = ["#A9E0F1", "#F5D6FF"]
+  const borderColors = ["#1686AA", "#7E269A"]
   const chartData = {
     labels: ["Variant"],
     datasets: data.map((d, i) => ({
       label: dataKey[i],
       data: [d * 100], // Convert to percentage
       backgroundColor: colors[i],
-      barThickness: 55,
+      borderColor: borderColors[i], 
     })),
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-light">{title}</h1>
+    <div className="bg-[#00000042] p-[26.6px]">
+      <h1 className="text-[19.875px] font-bold text-white leading-6 mb-[26.6px]">{title}</h1>
       <Bar
         options={chartOptions(title)}
         data={chartData}
@@ -100,6 +125,7 @@ const Chart = ({ id }: ChartProps) => {
             (item: any) => item.Variant !== "Overall"
           )
           setAllData(filteredArray)
+          console.log(filteredArray)
         })
         .catch((err) => {
           console.log(err)
@@ -159,18 +185,18 @@ const Chart = ({ id }: ChartProps) => {
           </button>
         </div>
       )}
-      <div className="grid">
+      <div className="grid lg:grid-cols-2 grid-cols-1 w-full gap-x-[10px] gap-y-[25px]">
         {createChart(chartData, "Conversion Rate %", [
-          "Green Button Homepage",
-          "Purple Button Homepage",
+          "Variant A",
+          "Variant B",
         ])}
         {createChart(engagementData, "Avg. Event count", [
-          "Green Button Homepage",
-          "Purple Button Homepage",
+          "Variant A",
+          "Variant B",
         ])}
         {createChart(bounceData, "Bounce Rate %", [
-          "Green Button Homepage",
-          "Purple Button Homepage",
+          "Variant A",
+          "Variant B",
         ])}
       </div>
     </div>
