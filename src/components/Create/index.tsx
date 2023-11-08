@@ -384,7 +384,7 @@ const Create = () => {
             </Card>
           </div>
         </div>
-{/*         <div className="flex-auto w-full md:w-1/2 lg:w-2/3 xl:w-1/4">
+        <div className="flex-auto w-full md:w-1/2 lg:w-2/3 xl:w-1/4">
           <div className="h-full flex flex-col">
             <Card className="w-full bg-[#00000042] border-none p-5 flex-grow">
               <CardHeader className="">
@@ -428,7 +428,7 @@ const Create = () => {
               </CardContent>
             </Card>
           </div>
-        </div> */}
+        </div>
 
       </div>
 
