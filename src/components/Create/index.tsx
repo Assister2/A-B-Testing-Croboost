@@ -211,7 +211,6 @@ const Create = () => {
 
   return (
     <div className="p-4 min-w-screen min-h-screen bg-[#132632]">
-      <div className="max-w-[800px] mx-auto">
       <h1 className="font-bold text-2xl text-white">Create A/B Test</h1>
       <div className="flex flex-col md:flex-row my-4 gap-4">
         <div className="flex-auto w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
@@ -226,7 +225,7 @@ const Create = () => {
                     onSubmit={handleSubmit(generateTest)}
                   >
                     <div className="grid grid-cols-2 gap-4">
-                   
+                      <div className="...">
                         <FormField
                           control={form.control}
                           name="name"
@@ -249,6 +248,7 @@ const Create = () => {
                             </FormItem>
                           )}
                         />
+
                          <FormField
                           control={form.control}
                           name="sampleRate"
@@ -271,7 +271,7 @@ const Create = () => {
                             </FormItem>
                           )}
                         />
-      
+
                     </div>
                     <p className="font-bold text-[16px] leading-4 mt-[21px]">Variants</p>
                     <div className="flex items-center gap-3.5 my-4">
@@ -308,7 +308,9 @@ const Create = () => {
                             <section className={`flex flex-col`}>
 
                               <Label htmlFor="message-2" className="text-label text-sm mb-3">JavaScript2</Label>
+
                               <Textarea placeholder="Type your message here." id="message-2" rows={6} className="border border-text-input rounded py-3 px-4 text-sm text-[#ffffffcc] bg-[#ffffff21]"   {...register("Variant.codeJS")} />
+
 
                             </section>
 
@@ -317,6 +319,7 @@ const Create = () => {
 
                       </Tabs>
                     </div>
+
                     <section className={ showOutput? "mt-4 flex flex-col gap-2 w-full bg-white rounded p-4" : "mt-4 flex flex-col gap-2 w-full bg-transparent rounded p-4"}>
           
                         <Button
@@ -366,6 +369,7 @@ const Create = () => {
                           )}
                         </section>
                       </section>
+
                     <Button
                       id="submit-test-button"
                       className="mx-auto my-2 bg-button accent-bg-color text-white p-3 w-36 rounded shadow-md disabled:bg-neutral-500 w-full"
@@ -380,7 +384,7 @@ const Create = () => {
             </Card>
           </div>
         </div>
-        {/* <div className="flex-auto w-full md:w-1/2 lg:w-2/3 xl:w-1/4">
+        <div className="flex-auto w-full md:w-1/2 lg:w-2/3 xl:w-1/4">
           <div className="h-full flex flex-col">
             <Card className="w-full bg-[#00000042] border-none p-5 flex-grow">
               <CardHeader className="">
@@ -424,7 +428,7 @@ const Create = () => {
               </CardContent>
             </Card>
           </div>
-        </div> */}
+        </div>
 
       </div>
 
@@ -639,7 +643,7 @@ const Create = () => {
           </section>
         </form>
       </Form> */}
-    </div>
+
     </div>
   )
 }

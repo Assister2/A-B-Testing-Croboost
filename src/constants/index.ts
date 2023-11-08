@@ -1,6 +1,5 @@
 // export const API_ROOT = "https://ug9d36lqx9.execute-api.us-east-1.amazonaws.com/api/v1"
 export const API_ROOT = "https://api.croboost.ai/v1"
-export const V2_API_ROOT = "https://api.croboost.ai/v2"
 // export const API_ROOT = "http://localhost:8000/v1"
 export const ROOT = "https://app.croboost.ai"
 export const TEST_CATEGORIES = [

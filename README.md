@@ -1,7 +1,5 @@
 # Frontend
 
-npm run dev
-
 Web application to create AB tests, analytics dashboards, etc.
 
 ## Dev
