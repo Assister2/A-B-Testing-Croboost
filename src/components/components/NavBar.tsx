@@ -47,13 +47,11 @@ const NavBar = () => {
         <div className='flex flex-row items-center gap-5 mt-5 justify-center sm:mt-0 sm:pl-5'>
           <a className="flex-none text-xl font-semibold text-white bg-[#522646] p-3.5 leading-4 rounded-xl" href={PAGES.HOME}>Croboost</a>
         </div>
-        <nav className="w-full mx-auto grid grid-cols-3 items-center justify-between">
-          <div className="flex flex-row gap-[27px] mt-5 justify-start sm:mt-0 sm:pl-5">
+        <nav className="w-full mx-auto px-4 grid grid-cols-3 items-center justify-between">
+          <div className="flex flex-row gap-6 mt-5 justify-start sm:mt-0 sm:pl-5">
             <NavigationMenu className='flex justify-between'>
-
-              <NavigationMenuList className="gap-2">
-                {/* <NavigationMenuItem>
-
+              <NavigationMenuList className="space-x-4">
+                <NavigationMenuItem>
                   <NavigationMenuLink
                     href={PAGES.HOME}
                     active={location === PAGES.HOME}
