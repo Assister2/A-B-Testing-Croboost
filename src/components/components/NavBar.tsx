@@ -17,46 +17,62 @@ const PAGES = {
   DASHBOARD: "/dashboard",
   TESTS: "/tests",
   TESTVIEW: "/testview",
+  INSTALLATION:"/installation"
   // V2CREATE: '/v2create'
+}
+interface NavbarProps {
+  navbarColor:string
 }
 
 const logOut = () => {
   resetTokens()
   window.location.reload()
 }
-const NavBar = () => {
+const NavBar = ({navbarColor="original"}:NavbarProps) => {
   const [location, setLocation] = useState(PAGES.HOME);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [buttonIsHovered, setButtonHovered] = useState(false);
+  const [bgColor, setBgColor] =  useState<string>()
   useEffect(() => {
     setLocation(window.location.pathname);
   }, []);
 
-  const headerStyle = {
-    backgroundColor: '#142732',
-  };
-
   useEffect(()=>{
     var tokens = loadTokens();
-    if (tokens)
+    if (tokens) {
       setButtonVisible(true)
+
+    }
     else 
       setButtonVisible(false);
+
   },[])
 
+  useEffect(()=>{
+    console.log(navbarColor);
+    if (navbarColor != 'primary')
+      setBgColor("#122632");
+    else
+      setBgColor("#1b1d1f");
+  },[navbarColor])
+
   return (
-    <header className="flex flex-wrap justify-center sm:flex-nowrap z-50 w-full  text-md py-4" style={headerStyle}>
+    <header className=
+    { bgColor == '#122632' ? 
+      "flex flex-wrap justify-center sm:flex-nowrap z-50 w-full  text-md py-4 bg-[#122632]"
+      :
+      "flex flex-wrap justify-center sm:flex-nowrap z-50 w-full  text-md py-4 bg-[#122632]"
+      }>
       <div className='flex justify-between w-full items-center'>
         <div className='flex flex-row items-center gap-5 mt-5 justify-center sm:mt-0 sm:pl-5'>
           {/* <a className="flex-none text-xl font-semibold text-white bg-[#522646] p-3.5 leading-4 rounded-xl" href={PAGES.HOME}>Croboost</a> */}
           <a href={PAGES.HOME}>
-            <img src="/croboostButton.svg"/>
+            <img src="/logo.png"/>
           </a>
         </div>
         <nav className="w-full mx-auto px-4 grid grid-cols-3 items-center justify-between">
           <div className="flex flex-row gap-6 mt-5 justify-start sm:mt-0 sm:pl-5">
             <NavigationMenu className='flex justify-between'>
-
               <NavigationMenuList className="gap-2">
                 {/* <NavigationMenuItem>
 
@@ -94,7 +110,7 @@ const NavBar = () => {
                       : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
                     }
                   >
-                    Tests
+                    Home
                   </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
@@ -113,10 +129,28 @@ const NavBar = () => {
                       : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
                     }
                   >
-                    Code
+                    Test Data
                   </NavigationMenuLink>
                 </NavigationMenuItem>
-
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    href={PAGES.INSTALLATION}
+                    active={location === PAGES.INSTALLATION}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
+                    }}
+                    onMouseLeave={(e) => {
+                       e.currentTarget.style.backgroundColor = location === PAGES.INSTALLATION ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                    }}
+                    style={
+                      location === PAGES.INSTALLATION  
+                      ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
+                      : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
+                    }
+                  >
+                    Installation
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
                
 
                 {/* <NavigationMenuItem>
