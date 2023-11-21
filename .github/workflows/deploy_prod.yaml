@@ -24,4 +24,4 @@ jobs:
       - name: Deploy to S3
         run: aws s3 sync ./dist/ s3://ab-website-static/
       - name: Create CloudFront invalidation
-        run: aws cloudfront create-invalidation --distribution-id E3MUM6UMBNCEGX --paths "/" "/dashboard" "/login" "/register" "/tests"
+        run: aws cloudfront create-invalidation --distribution-id E3MUM6UMBNCEGX --paths "/*"
