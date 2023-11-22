@@ -49,7 +49,6 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
   },[])
 
   useEffect(()=>{
-    console.log(navbarColor);
     if (navbarColor != 'primary')
       setBgColor("#122632");
     else
@@ -61,7 +60,7 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
     { bgColor == '#122632' ? 
       "flex flex-wrap justify-center sm:flex-nowrap z-50 w-full  text-md py-4 bg-[#122632]"
       :
-      "flex flex-wrap justify-center sm:flex-nowrap z-50 w-full  text-md py-4 bg-[#122632]"
+      "flex flex-wrap justify-center sm:flex-nowrap z-50 w-full  text-md py-4 bg-[#1b1d1f]"
       }>
       <div className='flex justify-between w-full items-center'>
         <div className='flex flex-row items-center gap-5 mt-5 justify-center sm:mt-0 sm:pl-5'>

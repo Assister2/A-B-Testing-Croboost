@@ -16,7 +16,7 @@ const Register = () => {
     postSignUp({email, confirm_email: email, password, confirm_password: confirm_password})
     .then(res => {
       console.log(res);
-      window.location.replace('/login');
+      window.location.replace('/getStarted');
     })
     .catch(e => {
       setError(String(e.message).replace('Password did not conform with policy: ', ''));
@@ -70,7 +70,7 @@ const Register = () => {
             </div> */}
             <div>
               <Input
-                type="Confirm password"
+                type="password"
                 label="Confirm Password"
                 value={confirm_password}
                 inputClassName="text-[#727272] py-1 px-2 font-medium bg-[#141414] border-0 rounded-[4px] shadow-[0px_4px_15px_0px_rgba(0, 0, 0, 0.06)]"
@@ -96,7 +96,7 @@ const Register = () => {
         </form>
       </div>
     </section>
-  </section>
+    </section>
   );
 };
 

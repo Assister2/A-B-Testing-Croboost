@@ -43,11 +43,11 @@ const Login = () => {
             </h2>
           </div>
           <form className="mt-8 space-y-2" onSubmit={handleLogin}>
-            <div className="rounded-md shadow-sm -space-y-px">
+            <div className="rounded-md shadow-sm ">
               <div>
                 <Input label="Email Address" inputClassName="text-[#727272] py-1 px-2 font-medium bg-[#141414] border-0 rounded-[4px] shadow-[0px_4px_15px_0px_rgba(0, 0, 0, 0.06)]" value={email} onChange={setEmail} />
               </div>
-              <div>
+              <div className="mt-5">
                 <Input type="password" label="Password" inputClassName="py-1 px-2 text-[#727272] font-medium bg-[#141414] border-0 rounded-[4px] shadow-[0px_4px_15px_0px_rgba(0, 0, 0, 0.06)]" value={password} onChange={setPassword} />
               </div>
             </div>

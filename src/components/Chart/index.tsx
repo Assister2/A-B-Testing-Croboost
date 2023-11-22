@@ -83,7 +83,7 @@ const createChart = (data: number[], title: string, dataKey: string[]) => {
     labels: ["Variant"],
     datasets: data.map((d, i) => ({
       label: dataKey[i],
-      data: [d * 100], // Convert to percentage
+      data: [d], // Convert to percentage
       backgroundColor: colors[i],
       borderColor: borderColors[i], 
     })),
@@ -164,7 +164,7 @@ const Chart = ({ id }: ChartProps) => {
       )
       setEngagementData(engagementData)
       const bounceData: any = allData.map((data: any) =>
-        Number(data.Average_Event_Count/100)
+        Number(data.Average_Event_Count)
       )
       setBounceData(bounceData)
     }
@@ -213,16 +213,16 @@ const Chart = ({ id }: ChartProps) => {
                 )}
                 <div className="grid lg:grid-cols-2 grid-cols-1 w-full gap-x-[10px] gap-y-[25px]">
                   {createChart(chartData, "Conversion Rate", [
-                    "Variant A",
-                    "Variant B",
+                    "Original",
+                    "Variant",
                   ])}
                   {createChart(engagementData, "Bounce Rate", [
-                    "Variant A",
-                    "Variant B",
+                    "Original",
+                    "Variant",
                   ])}
                   {createChart(bounceData, "Engagement", [
-                    "Variant A",
-                    "Variant B",
+                    "Original",
+                    "Variant",
                   ])}
                 </div>
               </>

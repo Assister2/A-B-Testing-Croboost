@@ -7,7 +7,8 @@ const GetStarted = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false)
   const handleRegisterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    window.location.replace(url);
+    event.preventDefault();
+    window.location.replace('/login');
   }
   return (
     <>
@@ -49,8 +50,8 @@ const GetStarted = () => {
             <div>
               
               {/* <Button type="submit" text="Sign Up" onClick={handleRegisterSubmit}/> */}
-              <Button type="submit"  className="mx-auto my-2 bg-[#10503D] hover:bg-[#10503D] text-white p-3  rounded shadow-md disabled:bg-neutral-500 w-full">Get Started</Button>
-  
+              <Button type="submit" className="mx-auto my-2 bg-[#10503D] hover:bg-[#10503D] text-white p-3  rounded shadow-md disabled:bg-neutral-500 w-full">Get Started</Button>
+            
             </div>
           </form>
         </div>
