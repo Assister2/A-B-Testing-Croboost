@@ -83,7 +83,7 @@ const createChart = (data: number[], title: string, dataKey: string[]) => {
     labels: ["Variant"],
     datasets: data.map((d, i) => ({
       label: dataKey[i],
-      data: [d], // Convert to percentage
+      data: [d],
       backgroundColor: colors[i],
       borderColor: borderColors[i], 
     })),
