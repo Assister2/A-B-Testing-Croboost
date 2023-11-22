@@ -22,9 +22,7 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card"
-import SyncLoader   from "react-spinners/ClipLoader";
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+import Spinner from "../Spinner"
 
 export const options = {
   indexAxis: "y" as const,
@@ -133,15 +131,13 @@ export default function App() {
   return (
   
           <div className="p-5 bg-[#1b1d1f] min-w-screen min-h-screen">
-            { loading ? (
-              <div className="flex justify-center items-center h-[100vh]">
-                <SyncLoader  
-                color="red"
-                />
+            { loading ? 
+              (<div className="flex justify-center items-center h-[100vh]">
+                <Spinner/>
               </div>
               )
               :
-            <>
+              <>
               {
                 !cardView && selectedTest?.is_live ?
                 <a className="flex w-[134px] p-2 justify-center cursor-pointer items-center gap-[10px] absolute right-[31px] top-[69px] rounded-[4px] bg-[#6F1111] text-white text-[12px] font-bold hover:bg-opacity-50" onClick={()=>{endTest()}}>End Test</a>
@@ -233,6 +229,7 @@ export default function App() {
               </div>}
               </>
             }
+            
           </div>
         )
 }

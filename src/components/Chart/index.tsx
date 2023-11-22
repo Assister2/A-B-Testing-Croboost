@@ -11,7 +11,7 @@ import {
 import { Bar } from "react-chartjs-2"
 import { loadTokens } from "../../utils"
 import { getChartData } from "../../client/abtest"
-import DotLoader  from "react-spinners/ClipLoader";
+import Spinner from "../Spinner"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
@@ -174,9 +174,8 @@ const Chart = ({ id }: ChartProps) => {
     <div className="p-5 bg-main min-w-screen min-h-screen">
         { loading ? (
               <div className="flex justify-center items-center h-[100vh]">
-                <DotLoader  
-                color="red"
-                />
+                <Spinner  
+                  />
               </div>
               )
               :
