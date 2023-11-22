@@ -5,16 +5,19 @@ interface InputProps {
   onChange: React.Dispatch<React.SetStateAction<string>> | React.Dispatch<React.SetStateAction<number>>;
   value: string;
   type?: string;
+  placeHolder?:string;
   className?: string;
+  inputClassName?: string
 }
 
-const Input = ({ label, onChange, value, type = "text", className = "" }: InputProps) => {
+const Input = ({ label, onChange, value, type = "text", className = "", inputClassName="", placeHolder= "" }: InputProps) => {
   return (
-    <div className={`my-2 flex flex-col ${className}`}>
-      <label className="text-label text-sm mb-3">{label}</label>
+    <div className={`flex flex-col ${className}`}>
+      <label className="text-[10px] font-bold mb-2 text-[#727272]">{label}</label>
       <input
         type={type}
-        className="border border-text-input rounded py-3 px-4 text-sm text-black"
+        placeholder={`${placeHolder}`}
+        className={` py-1 px-2 leading-[120%] min-h-[31px] ${inputClassName}`}
         value={value}
         onChange={(e) => onChange((e.target.value as any))} // .trim()
       />

@@ -7,8 +7,12 @@ module.exports = {
 			main: "#F5F5F5",
 			label: "363636",
 			"text-input": "#CBCBCB",
-			button: "#158370",
+			button: "#10503D",
 		  },
+		  fontFamily: {
+			sans: ["Inter", "Helvetica", "Arial", "sans-serif"],
+		  },
+
 		},
 	  },
 	plugins: [],

@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Create from '../components/Create';
+import Home from '../components/Home';
 
 ---
 <script>
@@ -14,6 +14,6 @@ import Create from '../components/Create';
 		tokens = null;
 	}
 </script>
-<Layout title="Croboost">
-	<Create client:load/>
+<Layout title="Croboost" navbarColor="primary">
+	<Home client:load/>
 </Layout>
