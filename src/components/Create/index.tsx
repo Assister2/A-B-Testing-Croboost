@@ -63,6 +63,7 @@ const Create = () => {
       id: `ex${getUnixTime()}`,
       name: "",
       trigger: `function (test) { if (document.location.pathname === '/') test.activate(); }`,
+      description:"",
       sampleRate: 1.0,
       Original: {
         codeJS: `const url = new URL(window.location.href);
@@ -140,11 +141,13 @@ const Create = () => {
     sampleRate,
     Original,
     Variant,
+    description
   }: IExperimentParameters) =>
     `Mojito.addTest({
   id: "${id}",
   name: "${name}",
   sampleRate: ${sampleRate},
+  description:${description},
   state: "live",
   trigger: ${trigger},
   recipes: {
@@ -210,13 +213,13 @@ const Create = () => {
 
 
   return (
-    <div className="p-4 min-w-screen min-h-screen bg-[#132632]">
+    <div className="p-4 min-w-screen min-h-screen bg-[#1b1d1f]">
       <div className="max-w-[800px] mx-auto">
       <h1 className="font-bold text-2xl text-white">Create A/B Test</h1>
       <div className="flex flex-col md:flex-row my-4 gap-4">
         <div className="flex-auto w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
           <div className="h-full flex flex-col">
-            <Card className="w-full bg-[#0E1C25] border-[#4B4B4B] text-white border-solid border-[1px] p-5 flex-grow">
+            <Card className="w-full bg-[black] border-[#4B4B4B] text-white border-solid border-[1px] p-5 flex-grow">
               <CardHeader className="">
                 <CardTitle className="font-bold text-[16px] leading-4">Details</CardTitle>
               </CardHeader>
@@ -234,7 +237,7 @@ const Create = () => {
                             <FormItem>
                               <FormLabel className="text-label text-sm mb-3">Test Name</FormLabel>
                               <FormControl>
-                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-[rgba(255, 255, 255, 0.80)] bg-[#212E36]" {...field} {...register("name", {
+                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-[rgba(255, 255, 255, 0.80)] bg-[#141414]" {...field} {...register("name", {
                                   required: "Name is required",
                                 })} />
                               </FormControl>
@@ -256,7 +259,7 @@ const Create = () => {
                             <FormItem>
                               <FormLabel className="text-label text-sm mb-3">Sample Rate</FormLabel>
                               <FormControl>
-                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-white bg-[#212E36]" type="number" {...field} {...register("sampleRate", {
+                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-white bg-[#141414]" type="number" {...field} {...register("sampleRate", {
                                   required: "SampleRate is required",
                                 })} />
                               </FormControl>
@@ -271,14 +274,35 @@ const Create = () => {
                             </FormItem>
                           )}
                         />
-      
+                          {/* <FormField
+                          control={form.control}
+                          name="description"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-label text-sm mb-3">Description</FormLabel>
+                              <FormControl>
+                                <Textarea rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-[rgba(255, 255, 255, 0.80)] bg-[#141414]" {...field} {...register("description", {
+                                  required: "Description is required",
+                                })} />
+                              </FormControl>
+                              {errors.description && (
+                                <FormDescription className="text-red-500 text-xs">
+                                  {errors.description.message}
+                                </FormDescription>
+                              )}
+
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        /> */}
                     </div>
                     <p className="font-bold text-[16px] leading-4 mt-[21px]">Variants</p>
                     <div className="flex items-center gap-3.5 my-4">
                       <Tabs defaultValue="a" className="createTest w-full">
                         <TabsList className="w-full p-0 font-medium leading-4 flex justify-start gap-2">
-                          <TabsTrigger value="a" className="text-[#ffffff9e] p-2">Variant A</TabsTrigger>
-                          <TabsTrigger value="b" className="text-[#ffffff9e] p-2">Variant B</TabsTrigger>
+                          <TabsTrigger value="a" className="text-[#ffffff9e] p-2">Original</TabsTrigger>
+                          <TabsTrigger value="b" className="text-[#ffffff9e] p-2">Variant</TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="a" className="py-5">
