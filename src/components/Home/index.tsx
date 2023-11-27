@@ -92,19 +92,22 @@ const Home = () => {
                 <button className="green-button justify-center items-center w-full"    onClick={() => { window.location.replace('/create');}}>
                     Create test
                 </button>
-                <button className="green-button bg-[#323F3B] justify-center items-center w-full">
-                    Read our docs
-                </button>
+                <a href="https://api.croboost.ai/docs" target="_blank">
+                  <button className="green-button bg-[#323F3B] justify-center items-center w-full">
+                      Read our docs
+                  </button>
+                </a>
             </div>
             <div className="bg-[#303133] p-6 rounded-[8px] flex flex-col gap-[10px]">
                 <h2 className="text-white text-[16px] font-bold leading-[120%]">
                     Download our Chrome extension
                 </h2>
                 <h3 className="text-[12px] leading-[140%] text-white  mb-[15px] md:w-[310px]">Read our 10 page report about your website with advanced tips, placeholder, etc.</h3>
-
-                <button className="text-[12px] green-button bg-[#673468] justify-center items-center w-[138px] ">
-                    Download Now
-                </button>
+                <a href="https://chrome.google.com/webstore/detail/my-chrome-extension/abcdefgh-ijklmnop" target="_blank">
+                  <button className="text-[12px] green-button bg-[#673468] justify-center items-center w-[138px] ">
+                      Download Now
+                  </button>
+                </a>
             </div>
         </section>
     </section>
