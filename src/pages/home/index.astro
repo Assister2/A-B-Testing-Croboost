@@ -1,17 +1,20 @@
 ---
-import Home from '../../components/Home';
 import Layout from '../../layouts/Layout.astro';
+import Home from '../../components/Home';
+
 ---
 <script>
 	import { loadTokens } from "../../utils";
 	var tokens = loadTokens();
 	if (!tokens || !tokens.id_token){
 		window.location.replace("/login");
+
 	}
 	else {
 		tokens = null;
 	}
 </script>
-<Layout title="Croboost">
+<Layout title="Croboost" navbarColor="primary">
+
 	<Home client:load/>
 </Layout>

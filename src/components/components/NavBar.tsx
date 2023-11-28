@@ -17,7 +17,8 @@ const PAGES = {
   DASHBOARD: "/dashboard",
   TESTS: "/tests",
   TESTVIEW: "/testview",
-  INSTALLATION:"/installation"
+  INSTALLATION:"/installation",
+  HISTORY:"/history"
   // V2CREATE: '/v2create'
 }
 interface NavbarProps {
@@ -98,16 +99,16 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
                 </NavigationMenuItem> */}
                 <NavigationMenuItem>
                   <NavigationMenuLink
-                    href={PAGES.DASHBOARD}
-                    active={location === PAGES.DASHBOARD}
+                    href={PAGES.HOME}
+                    active={location === PAGES.HOME}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
                     }}
                     onMouseLeave={(e) => {
-                       e.currentTarget.style.backgroundColor = location === PAGES.DASHBOARD ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                       e.currentTarget.style.backgroundColor = location === PAGES.HOME ? `rgba(255, 255, 255, 0.10)` : `transparent`
                     }}
                     style={
-                      location === PAGES.DASHBOARD  
+                      location === PAGES.HOME  
                       ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
                       : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
                     }
@@ -117,16 +118,16 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink
-                    href={PAGES.TESTS}
-                    active={location === PAGES.TESTS}
+                    href={PAGES.DASHBOARD}
+                    active={location === PAGES.DASHBOARD}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = location === PAGES.TESTS ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                      e.currentTarget.style.backgroundColor = location === PAGES.DASHBOARD ? `rgba(255, 255, 255, 0.10)` : `transparent`
                     }}
                     style={
-                      location === PAGES.TESTS 
+                      location === PAGES.DASHBOARD 
                       ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
                       : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
                     }
@@ -136,16 +137,16 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink
-                    href={PAGES.INSTALLATION}
-                    active={location === PAGES.INSTALLATION}
+                    href={PAGES.HISTORY}
+                    active={location === PAGES.HISTORY}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
                     }}
                     onMouseLeave={(e) => {
-                       e.currentTarget.style.backgroundColor = location === PAGES.INSTALLATION ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                       e.currentTarget.style.backgroundColor = location === PAGES.HISTORY ? `rgba(255, 255, 255, 0.10)` : `transparent`
                     }}
                     style={
-                      location === PAGES.INSTALLATION  
+                      location === PAGES.HISTORY  
                       ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
                       : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
                     }
