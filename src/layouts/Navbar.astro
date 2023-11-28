@@ -1,0 +1,10 @@
+---
+
+import NavBar from "../components/components/NavBar";
+
+interface Props {
+	navbarColor?: string; 
+}
+const { navbarColor } = Astro.props;
+---
+<NavBar client:visible />

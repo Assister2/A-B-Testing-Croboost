@@ -1,5 +1,6 @@
 --- 
-import NavBar from "../components/components/NavBar";
+
+import Navbar from "./Navbar.astro";
 // import styles from "../styles/index.scss";
 interface Props {
 	title: string;
@@ -51,7 +52,7 @@ const { navbarColor } = Astro.props;
 		}
 	</style>
 	<body>
-		{!isHome ? <NavBar navbarColor={navbarColor}/> : null}
+		{!isHome ? <Navbar /> : null}
 		<slot />
 	</body>
 </html>
