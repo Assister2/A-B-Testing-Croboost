@@ -7,4 +7,4 @@ interface Props {
 }
 const { navbarColor } = Astro.props;
 ---
-<NavBar client:visible />
+<NavBar client:visible navbarColor={navbarColor}/>

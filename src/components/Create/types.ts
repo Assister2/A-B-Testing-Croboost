@@ -9,7 +9,6 @@ export interface IExperimentParameters {
   // state: string; // live, staging, inactive
   trigger: string;
   sampleRate: number;
-  description: string;
   Original: TestInputs;
   Variant: TestInputs;
 }
