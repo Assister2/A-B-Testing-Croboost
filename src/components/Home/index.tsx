@@ -88,7 +88,7 @@ const Home = () => {
         <section className="flex gap-[18px] flex-col md:flex-row p-10">
             <div className="p-6 bg-black flex flex-col gap-[10px] rounded-[8px]">
                 <h2 className="text-[16px] font-bold leading-[120%] text-white">Create your first A/B test</h2>
-                <h3 className="text-[12px] leading-[140%] text-white  mb-[15px]">Variant tests, redirect tests and more options</h3>
+                <h3 className="text-[12px] leading-[140%] text-white w-[209px] mb-[15px]">Variant tests, redirect tests and more options</h3>
                 <button className="green-button justify-center items-center w-full"    onClick={() => { window.location.replace('/create');}}>
                     Create test
                 </button>
