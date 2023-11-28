@@ -63,7 +63,6 @@ const Create = () => {
       id: `ex${getUnixTime()}`,
       name: "",
       trigger: `function (test) { if (document.location.pathname === '/') test.activate(); }`,
-      description:"",
       sampleRate: 1.0,
       Original: {
         codeJS: `const url = new URL(window.location.href);
@@ -141,13 +140,11 @@ const Create = () => {
     sampleRate,
     Original,
     Variant,
-    description
   }: IExperimentParameters) =>
     `Mojito.addTest({
   id: "${id}",
   name: "${name}",
   sampleRate: ${sampleRate},
-  description:${description},
   state: "live",
   trigger: ${trigger},
   recipes: {
