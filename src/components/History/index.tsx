@@ -86,7 +86,6 @@ const History = () => {
   }
   useEffect(() => {
     const tokens = loadTokens()
-    console.log(tokens?.id_token)
     if (tokens) {
       setUserData(tokens)
       getTests(tokens.id_token)

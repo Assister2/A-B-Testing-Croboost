@@ -7,8 +7,8 @@ import Home from '../components/Home';
 	import { loadTokens } from "../utils";
 	var tokens = loadTokens();
 	if (!tokens || !tokens.id_token){
-		// window.location.replace("/login");
-		console.log(tokens);
+		window.location.replace("/login");
+
 	}
 	else {
 		tokens = null;

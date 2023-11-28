@@ -17,8 +17,7 @@ const PAGES = {
   DASHBOARD: "/dashboard",
   TESTS: "/tests",
   TESTVIEW: "/testview",
-  INSTALLATION:"/installation",
-  HISTORY:"/history"
+  INSTALLATION:"/installation"
   // V2CREATE: '/v2create'
 }
 interface NavbarProps {
@@ -26,8 +25,9 @@ interface NavbarProps {
 }
 
 const logOut = () => {
+  console.log('clicked')
   resetTokens()
-  window.location.reload()
+  window.location.replace('/');
 }
 const NavBar = ({navbarColor="original"}:NavbarProps) => {
   const [location, setLocation] = useState(PAGES.HOME);
@@ -96,16 +96,16 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
                 </NavigationMenuItem> */}
                 <NavigationMenuItem>
                   <NavigationMenuLink
-                    href={PAGES.HOME}
-                    active={location === PAGES.HOME}
+                    href={PAGES.DASHBOARD}
+                    active={location === PAGES.DASHBOARD}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
                     }}
                     onMouseLeave={(e) => {
-                       e.currentTarget.style.backgroundColor = location === PAGES.HOME ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                       e.currentTarget.style.backgroundColor = location === PAGES.DASHBOARD ? `rgba(255, 255, 255, 0.10)` : `transparent`
                     }}
                     style={
-                      location === PAGES.HOME  
+                      location === PAGES.DASHBOARD  
                       ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
                       : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
                     }
@@ -115,16 +115,16 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink
-                    href={PAGES.DASHBOARD}
-                    active={location === PAGES.DASHBOARD}
+                    href={PAGES.TESTS}
+                    active={location === PAGES.TESTS}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = location === PAGES.DASHBOARD ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                      e.currentTarget.style.backgroundColor = location === PAGES.TESTS ? `rgba(255, 255, 255, 0.10)` : `transparent`
                     }}
                     style={
-                      location === PAGES.DASHBOARD 
+                      location === PAGES.TESTS 
                       ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
                       : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
                     }
@@ -134,16 +134,16 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink
-                    href={PAGES.HISTORY}
-                    active={location === PAGES.HISTORY}
+                    href={PAGES.INSTALLATION}
+                    active={location === PAGES.INSTALLATION}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
                     }}
                     onMouseLeave={(e) => {
-                       e.currentTarget.style.backgroundColor = location === PAGES.HISTORY ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                       e.currentTarget.style.backgroundColor = location === PAGES.INSTALLATION ? `rgba(255, 255, 255, 0.10)` : `transparent`
                     }}
                     style={
-                      location === PAGES.HISTORY  
+                      location === PAGES.INSTALLATION  
                       ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
                       : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
                     }
@@ -192,9 +192,9 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
             {/* <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500" href="#">Work</a> */}
           </div>
         </nav>
-        {buttonVisible && <p className='min-w-[100px] text-sl font-semibold text-white cursor-pointer' onClick={logOut}>
+        {buttonVisible && <button className='min-w-[100px] text-sl font-semibold text-white cursor-pointer' onClick={logOut}>
           Log out
-        </p>}
+        </button>}
       </div>
     </header>
   )

@@ -168,7 +168,6 @@ const Create = () => {
     if (userData) {
       const res = await createV2Test(userData.id_token, mojitoOutput)
       res && setUpdated(!updated)
-      console.log(mojitoOutput)
       alert(`OK: success`)
     }
   }
