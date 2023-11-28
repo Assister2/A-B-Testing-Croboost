@@ -148,7 +148,6 @@ export const getUserData = async () => {
     },
   })
   const data = await response.json()
-  console.log(data)
   return parsedTokens?.id_token
 }
 

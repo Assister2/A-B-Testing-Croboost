@@ -141,7 +141,6 @@ const Chart = ({ id }: ChartProps) => {
           )
           setAllData(filteredArray)
           setLoading(false);
-          console.log(filteredArray)
         })
         .catch((err) => {
           console.log(err)

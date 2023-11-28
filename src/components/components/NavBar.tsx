@@ -24,15 +24,18 @@ interface NavbarProps {
   navbarColor:string
 }
 
-const logOut = () => {
-  resetTokens()
-  window.location.reload()
-}
+
 const NavBar = ({navbarColor="original"}:NavbarProps) => {
   const [location, setLocation] = useState(PAGES.HOME);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [buttonIsHovered, setButtonHovered] = useState(false);
   const [bgColor, setBgColor] =  useState<string>()
+  const logOut = () => {
+    console.log('clicked')
+    resetTokens()
+    window.location.replace('/');
+  }
+
   useEffect(() => {
     setLocation(window.location.pathname);
   }, []);
@@ -191,9 +194,9 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
             {/* <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500" href="#">Work</a> */}
           </div>
         </nav>
-        {buttonVisible && <p className='min-w-[100px] text-sl font-semibold text-white cursor-pointer' onClick={logOut}>
+        {buttonVisible && <button className='min-w-[100px] text-sl font-semibold text-white cursor-pointer' onClick={()=>console.log('logged out')}>
           Log out
-        </p>}
+        </button>}
       </div>
     </header>
   )

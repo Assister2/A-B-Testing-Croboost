@@ -15,7 +15,6 @@ const Register = () => {
     event.preventDefault();
     postSignUp({email, confirm_email: email, password, confirm_password: confirm_password})
     .then(res => {
-      console.log(res);
       window.location.replace('/getStarted');
     })
     .catch(e => {
