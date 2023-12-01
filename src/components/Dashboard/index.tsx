@@ -188,7 +188,7 @@ export default function App() {
                       <Card className="w-full  rounded-[7.746px] bg-[#303133] text-white border-0" key={index}>
                         <CardHeader>
                           <CardTitle className="text-2xl font-normal capitalize">
-                            {test.title} Test
+                            {test.title}
                           </CardTitle>
                           <CardDescription className="text-sm font-bold">
                             {formatISODate(test.iso_created_at)}

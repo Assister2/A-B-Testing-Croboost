@@ -1,4 +1,5 @@
 export type TestInputs = {
+  variantName: string;
   codeJS: string;
   codeCSS: string;
   // sampleRate: number;

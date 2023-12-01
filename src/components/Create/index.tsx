@@ -65,6 +65,7 @@ const Create = () => {
       sampleRate: 1.0,
       description:'',
       Original: {
+        variantName:'',
         codeJS: `const url = new URL(window.location.href);
         url.searchParams.set('_ab_croboost', '${TEST_NAMES[0].toLowerCase()}');
         window.history.pushState({ path: url.href }, '', url.href);`,
@@ -73,6 +74,7 @@ const Create = () => {
         }`,
       },
       Variant: {
+        variantName:'',
         codeJS: `const url = new URL(window.location.href);
         url.searchParams.set('_ab_croboost', '${TEST_NAMES[1].toLowerCase()}');
         window.history.pushState({ path: url.href }, '', url.href);`,
@@ -185,9 +187,10 @@ const Create = () => {
       setLoading(true)
       const res = await createTest(userData.id_token, data.name, mojitoOutput)
       if (res) {
-        setLoading(false);
+     
         setUpdated(!updated)
-        window.location.replace('/dashboard');
+        window.location.replace('/history');
+        setLoading(false);
       } 
       
     }
@@ -202,9 +205,7 @@ const Create = () => {
     id: z.number().refine((value) => value !== null, {
       message: "ID is required",
     }),
-    description:z.string().refine((value) => value.trim() !== "", {
-      message: "description is required",
-    }),
+    description:z.string(),
     sampleRate: z
       .number()
       .refine((value) => value !== null && value >= 0 && [1, 0.1, 0.5].includes(value), {
@@ -295,14 +296,13 @@ const Create = () => {
                               <FormLabel className="text-label text-sm mb-3">Description</FormLabel>
                               <FormControl>
                                 <Textarea rows={4} className="border border-text-input rounded py-3 px-4 text-sm text-[rgba(255, 255, 255, 0.80)] bg-[#141414]" {...field} {...register("description", {
-                                  required: "Description is required",
                                 })} />
                               </FormControl>
-                              {errors.description && (
+                              {/* {errors.description && (
                                 <FormDescription className="text-red-500 text-xs">
                                   {errors.description.message}
                                 </FormDescription>
-                              )}
+                              )} */}
 
 
                               <FormMessage />
@@ -313,11 +313,19 @@ const Create = () => {
                     <div className="flex items-center gap-3.5 my-4">
                       <Tabs defaultValue="a" className="createTest w-full">
                         <TabsList className="w-full p-0 font-medium leading-4 flex justify-start gap-2">
-                          <TabsTrigger value="a" className="text-[#ffffff9e] p-2">Original</TabsTrigger>
-                          <TabsTrigger value="b" className="text-[#ffffff9e] p-2">Variant</TabsTrigger>
+                          <TabsTrigger value="a" className="text-[#ffffff9e] p-2">Variant A</TabsTrigger>
+                          <TabsTrigger value="b" className="text-[#ffffff9e] p-2">Variant B</TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="a" className="py-5">
+                          <section className={`mb-2 grid grid-cols-2 gap-2`}>
+                           <section className={`flex flex-col`}>
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">Variant Name</Label>
+                              <Input 
+                               id="message-2" className="border border-text-input rounded py-3 px-4 text-sm text-[#ffffffcc] bg-[#ffffff21]"   {...register("Original.variantName")} />
+
+                            </section>
+                          </section>
                           <section className={`mb-2 grid grid-cols-2 gap-2`}>
                             <section className={`flex flex-col`}>
                               <Label htmlFor="message-2" className="text-label text-sm mb-3">CSS</Label>
@@ -335,6 +343,14 @@ const Create = () => {
                         </TabsContent>
 
                         <TabsContent value="b" className="py-5">
+                        <section className={`mb-2 grid grid-cols-2 gap-2`}>
+                           <section className={`flex flex-col`}>
+                              <Label htmlFor="message-2" className="text-label text-sm mb-3">Variant Name</Label>
+                              <Input 
+                               id="message-2" className="border border-text-input rounded py-3 px-4 text-sm text-[#ffffffcc] bg-[#ffffff21]"   {...register("Variant.variantName")} />
+
+                            </section>
+                          </section>
                           <section className={`mb-2 grid grid-cols-2 gap-2`}>
                             <section className={`flex flex-col`}>
                               <Label htmlFor="message-2" className="text-label text-sm mb-3">CSS2</Label>
