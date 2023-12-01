@@ -10,6 +10,7 @@ export interface IExperimentParameters {
   trigger: string;
   sampleRate: number;
   Original: TestInputs;
+  description: string;
   Variant: TestInputs;
 }
 export const TEST_NAMES = ["Original", "Variant"];

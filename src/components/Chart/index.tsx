@@ -51,7 +51,7 @@ const chartOptions = (chartTitle: string) => {
         categoryPercentage: 0.8,
         barPercentage: 0.8,
         min: 0,
-        max: 100,
+        // max: 100,
         ticks: {
           beginAtZero: true,
           callback: function(value) {
@@ -72,7 +72,10 @@ const chartOptions = (chartTitle: string) => {
         categoryPercentage: 0.8,
         barPercentage: 0.8,
       },
-    }
+    },
+    labels: {
+      display: false,
+    },
   }
 }
 
@@ -80,7 +83,7 @@ const createChart = (data: number[], title: string, dataKey: string[]) => {
   const colors = ["#A9E0F1", "#F5D6FF"]
   const borderColors = ["#1686AA", "#7E269A"]
   const chartData = {
-    labels: ["Variant"],
+    labels: [title],
     datasets: data.map((d, i) => ({
       label: dataKey[i],
       data: [d],

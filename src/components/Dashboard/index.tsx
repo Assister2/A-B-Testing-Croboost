@@ -104,14 +104,8 @@ export default function App() {
   }
 
   function handleButtonClick(test: ABTest) {
-    // Do something with the recordId, like recording it or using it in your application.
-    console.log("Button clicked with record_id:", test.record_id)
     setCardView(false);
     setSelectedTest(test)
-
-    // const dashboardUrl = `dashboard/${recordId}`
-
-    // window.location.href = dashboardUrl
   }
 
   const endTest = async () => {

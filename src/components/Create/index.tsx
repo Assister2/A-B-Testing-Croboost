@@ -46,8 +46,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
-
+import Spinner from "../Spinner"
 
 const getUnixTime = () => Math.trunc(new Date().getTime() / 1000)
 const Create = () => {
@@ -64,6 +63,7 @@ const Create = () => {
       name: "",
       trigger: `function (test) { if (document.location.pathname === '/') test.activate(); }`,
       sampleRate: 1.0,
+      description:'',
       Original: {
         codeJS: `const url = new URL(window.location.href);
         url.searchParams.set('_ab_croboost', '${TEST_NAMES[0].toLowerCase()}');
@@ -88,6 +88,7 @@ const Create = () => {
   const [updated, setUpdated] = useState<boolean>(false)
   const [tab, setTab] = useState<"Original" | "Variant">("Original")
   const toggleRef = useRef<HTMLButtonElement>(null)
+  const [loading, setLoading] = useState<boolean>(false)
   useEffect(() => {
     const tokens = loadTokens()
     if (tokens) {
@@ -138,6 +139,7 @@ const Create = () => {
     name,
     trigger,
     sampleRate,
+    description,
     Original,
     Variant,
   }: IExperimentParameters) =>
@@ -146,6 +148,7 @@ const Create = () => {
   name: "${name}",
   sampleRate: ${sampleRate},
   state: "live",
+  description:"${description}",
   trigger: ${trigger},
   recipes: {
     "0": {
@@ -179,10 +182,14 @@ const Create = () => {
   const generateTest = async (data: IExperimentParameters) => {
     const mojitoOutput = constructTest(data)
     if (userData) {
+      setLoading(true)
       const res = await createTest(userData.id_token, data.name, mojitoOutput)
-      res && setUpdated(!updated)
-      console.log(mojitoOutput)
-      alert(`OK: ${res.title}`)
+      if (res) {
+        setLoading(false);
+        setUpdated(!updated)
+        window.location.replace('/dashboard');
+      } 
+      
     }
   }
 
@@ -195,6 +202,9 @@ const Create = () => {
     id: z.number().refine((value) => value !== null, {
       message: "ID is required",
     }),
+    description:z.string().refine((value) => value.trim() !== "", {
+      message: "description is required",
+    }),
     sampleRate: z
       .number()
       .refine((value) => value !== null && value >= 0 && [1, 0.1, 0.5].includes(value), {
@@ -206,9 +216,13 @@ const Create = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   })
-
-
-
+ if (loading){
+  return (
+    <div className="flex justify-center items-center h-[100vh] bg-[#1b1d1f]">
+      <Spinner/>
+    </div>
+  )
+ }
   return (
     <div className="p-4 min-w-screen min-h-screen bg-[#1b1d1f]">
       <div className="max-w-[800px] mx-auto">
@@ -271,7 +285,9 @@ const Create = () => {
                             </FormItem>
                           )}
                         />
-                          {/* <FormField
+
+                    </div>
+                    <FormField
                           control={form.control}
                           name="description"
                           render={({ field }) => (
@@ -292,8 +308,7 @@ const Create = () => {
                               <FormMessage />
                             </FormItem>
                           )}
-                        /> */}
-                    </div>
+                        />
                     <p className="font-bold text-[16px] leading-4 mt-[21px]">Variants</p>
                     <div className="flex items-center gap-3.5 my-4">
                       <Tabs defaultValue="a" className="createTest w-full">
