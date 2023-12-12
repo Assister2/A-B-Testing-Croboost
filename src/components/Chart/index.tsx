@@ -159,7 +159,14 @@ const Chart = ({ id }: ChartProps) => {
       const conversionData: any = allData.map((data: any) =>
         Number(data.Average_Conversion_Rate.replace("%",""))
       )
-      console.log(conversionData)
+      const session_Count: any = allData.map((data:any) =>
+        Number(data.Session_Count)
+      )
+      // console.log(conversionData)
+      // console.log(session_Count, typeof(session_Count))
+
+      // console.log(session_Count[session_Count.length()-1])
+      
       setChartData(conversionData)
       const engagementData: any = allData.map((data: any) =>
         Number(data.Bounce_Rate.replace("%",""))

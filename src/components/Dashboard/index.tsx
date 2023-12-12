@@ -10,7 +10,7 @@ import {
 } from "chart.js"
 import Chart from "../Chart"
 import { loadTokens, Tokens, resetTokens} from "../../utils"
-import { ABTest, getTests, getUserData } from "../../client/abtest"
+import { ABTest, getChartData, getTests, getUserData } from "../../client/abtest"
 import {
   updateTest,
 } from "../../client/abtest"
@@ -51,6 +51,7 @@ export default function App() {
   const [selectedTest, setSelectedTest] = React.useState<ABTest | undefined>(
     undefined
   )
+  const [sessionCount,setSessionCount] = React.useState<undefined | number>(0);
   const [userData, setUserData] = React.useState<Tokens | undefined>(undefined)
 
   useEffect(() => {
@@ -102,10 +103,31 @@ export default function App() {
       } ago`
     }
   }
-
+  function sessionCount_number(selectedTest?: ABTest){
+    const tokens = loadTokens()
+    if(selectedTest?.record_id && tokens){
+      // console.log("FUNCTION",tokens)
+    
+      getChartData(tokens.id_token, selectedTest?.record_id)
+        .then((tests) =>{
+          const {data} = tests;
+          const parsedData =JSON.parse(data)
+          const filteredArray = parsedData.filter(
+            (item:any) => item.Variant === "Overall"
+          )
+          // console.log("ASDASDASD",filteredArray[0].Session_Count,filteredArray,typeof(filteredArray))
+          setSessionCount(filteredArray[0].Session_Count);
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+    }
+  }
   function handleButtonClick(test: ABTest) {
     setCardView(false);
     setSelectedTest(test)
+    // const id = test.record_id
+    sessionCount_number(test)
   }
 
   const endTest = async () => {
@@ -215,9 +237,15 @@ export default function App() {
               {!cardView && <div className="text-[12px] leading-6 underline text-white cursor-pointer" onClick={() => setCardView(true)}>
                               Back to all live tests
                             </div>}
-              {!cardView && <h5 className="mt-5 mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
+              {!cardView && 
+                            <div className="flex flex-row justify-between">
+                            <h5 className="flex mt-5 mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
                             {selectedTest?.title} Test
-                            </h5>} 
+                            </h5>
+                            <h5 className="flex mt-5 mb-5 text-xl font-semibold dark:text-gray-700 text-white ml-4">
+                            Session Count : {sessionCount}
+                            </h5>
+                            </div>} 
               {!cardView && <div className="w-full">
                 {selectedTest && <Chart id={selectedTest.record_id} />}
               </div>}
