@@ -159,13 +159,13 @@ export default function App() {
         )
         :
         <>
-        {
+        {/* {
           !cardView && selectedTest?.is_live ?
           <a className="flex w-[70px] p-2 justify-center cursor-pointer items-center gap-[10px] absolute right-[31px] top-[69px] rounded-[4px] bg-[#6F1111] text-white text-[12px] font-bold hover:bg-opacity-50" onClick={()=>{endTest()}}>End Test</a>
           :
           ""
           // <a className="flex w-[134px] p-2 justify-center items-center gap-[10px] absolute right-[31px] top-[69px] rounded-[4px] bg-[#10503D] text-white text-[12px] font-bold hover:bg-opacity-50" href={'/create'}>New A/B Test</a>
-        }
+        } */}
 
         {cardView && <>
         {currentData.length > 0 ? (
@@ -253,8 +253,16 @@ export default function App() {
         )}
         </>}
 
-        {!cardView && <div className="text-[12px] leading-6 underline text-white cursor-pointer ml-[20px]" onClick={() => setCardView(true)}>
-                        Back to all live tests
+        {!cardView &&
+                      <div className="flex flex-row justify-between w-full">
+                        <div className="text-[12px] leading-6 underline text-white cursor-pointer ml-[20px]" onClick={() => setCardView(true)}>
+                          Back to all live tests
+                        </div>
+                        {
+                        !cardView && selectedTest?.is_live ?
+                        <a className="flex w-[70px] p-2 justify-center cursor-pointer items-center gap-[10px] rounded-[4px] bg-[#6F1111] text-white text-[12px] font-bold hover:bg-opacity-50" onClick={()=>{endTest()}}>End Test</a>
+                        :
+                        ""}
                       </div>}
         {!cardView && 
                       <h5 className="flex mt-5 mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-5">
