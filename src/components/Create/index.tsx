@@ -64,6 +64,7 @@ const Create = () => {
       trigger: `function (test) { if (document.location.pathname === '/') test.activate(); }`,
       sampleRate: 1.0,
       description:'',
+      preview_url:'https://',
       Original: {
         variantName:'',
         codeJS: `const url = new URL(window.location.href);
@@ -144,6 +145,7 @@ const Create = () => {
     description,
     Original,
     Variant,
+    preview_url,
   }: IExperimentParameters) =>
     `Mojito.addTest({
   id: "${id}",
@@ -183,11 +185,11 @@ const Create = () => {
 });`
   const generateTest = async (data: IExperimentParameters) => {
     const mojitoOutput = constructTest(data)
+    console.log("INPUT", data)
     if (userData) {
       setLoading(true)
-      const res = await createTest(userData.id_token, data.name, mojitoOutput)
+      const res = await createTest(userData.id_token, data.name, data.preview_url ,mojitoOutput)
       if (res) {
-     
         setUpdated(!updated)
         window.location.replace('/history');
         setLoading(false);
@@ -264,7 +266,7 @@ const Create = () => {
                             </FormItem>
                           )}
                         />
-                         <FormField
+                         {/* <FormField
                           control={form.control}
                           name="sampleRate"
                           render={({ field }) => (
@@ -285,9 +287,31 @@ const Create = () => {
                               <FormMessage />
                             </FormItem>
                           )}
-                        />
+                        /> */}
+                        <FormField
+                          control={form.control}
+                          name="preview_url"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-label text-sm mb-3">Preview Url</FormLabel>
+                              <FormControl>
+                                <Input className="border border-text-input rounded py-3 px-4 text-sm text-[rgba(255, 255, 255, 0.80)] bg-[#141414]" {...field} {...register("preview_url", {
+                                  required: "URL is required",
+                                })} />
+                              </FormControl>
+                              {errors.name && (
+                                <FormDescription className="text-red-500 text-xs">
+                                  {errors.name.message}
+                                </FormDescription>
+                              )}
 
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                     </div>
+                    
                     <FormField
                           control={form.control}
                           name="description"

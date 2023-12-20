@@ -96,18 +96,25 @@ export default function App() {
     const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)) // Calculate days
 
     if (daysDifference === 0) {
-      return "Started today"
+      return "Live since today"
     } else {
-      return `Started  ${daysDifference} day${
+      return `Live since  ${daysDifference} day${
         daysDifference !== 1 ? "s" : ""
       } ago`
     }
   }
+  const formatCreateDate = (isoDate: string) =>{
+    const date: any = new Date(isoDate)
+    console.log("date",date)
+    const months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September','October', 'November', 'December']
+    const month = date.getMonth();
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `Created ${months[month]} ${day}, ${year}`
+  }
   function sessionCount_number(selectedTest?: ABTest){
     const tokens = loadTokens()
     if(selectedTest?.record_id && tokens){
-      // console.log("FUNCTION",tokens)
-    
       getChartData(tokens.id_token, selectedTest?.record_id)
         .then((tests) =>{
           const {data} = tests;
@@ -115,7 +122,6 @@ export default function App() {
           const filteredArray = parsedData.filter(
             (item:any) => item.Variant === "Overall"
           )
-          // console.log("ASDASDASD",filteredArray[0].Session_Count,filteredArray,typeof(filteredArray))
           setSessionCount(filteredArray[0].Session_Count);
         })
         .catch((err)=>{
@@ -145,113 +151,127 @@ export default function App() {
   }
 
   return (
-  
-          <div className="p-5 bg-[#1b1d1f] min-w-screen min-h-screen">
-            { loading ? 
-              (<div className="flex justify-center items-center h-[100vh]">
-                <Spinner/>
-              </div>
-              )
-              :
-              <>
-              {
-                !cardView && selectedTest?.is_live ?
-                <a className="flex w-[134px] p-2 justify-center cursor-pointer items-center gap-[10px] absolute right-[31px] top-[69px] rounded-[4px] bg-[#6F1111] text-white text-[12px] font-bold hover:bg-opacity-50" onClick={()=>{endTest()}}>End Test</a>
-                :
-                <a className="flex w-[134px] p-2 justify-center items-center gap-[10px] absolute right-[31px] top-[69px] rounded-[4px] bg-[#10503D] text-white text-[12px] font-bold hover:bg-opacity-50" href={'/create'}>New A/B Test</a>
-              }
-      
-              {cardView && <>
-              {currentData.length > 0 ? (
-                <>
-                  {" "}
-      
-                  <h5 className="mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
-                    Live Tests
-                  </h5>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-6 gap-3 ml-4">
-                    {currentData.map((test, index) => {
-                      // const cardId = uuidv4();
-                      return (
-                        <Card className="w-full rounded-[7.746px] bg-[#303133] text-white border-0" key={index}>
-                          <CardHeader>
-                            <CardTitle className="text-2xl font-normal capitalize ">
-                              {test.title} Test
-                            </CardTitle>
-                            <CardDescription className="text-sm font-bold">
-                              {formatISODate(test.iso_created_at)}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardFooter className="flex justify-between">
-                            <Button
-                              variant="outline"
-                              className="rounded-[4px] bg-white hover:bg-[#FFFFFF33] text-[14px] font-bold text-black hover:text-black px-6 py-2 border-0"
-                              onClick={() => handleButtonClick(test)}
-                            >
-                              View Data
-                            </Button>
-                          </CardFooter>
-                        </Card>
-                      )
-                    })}
-                  </div>
-                </>
-              ) : (
-                ""
-              )}
-      
-              {previousData.length > 0 ? (
-                <div className="mt-5">
-                  <h5 className="mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
-                  Ended Tests
-                  </h5>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-6 gap-3 ml-4">
-                    {previousData.map((test, index) => (
-                      <Card className="w-full  rounded-[7.746px] bg-[#303133] text-white border-0" key={index}>
-                        <CardHeader>
-                          <CardTitle className="text-2xl font-normal capitalize">
-                            {test.title}
-                          </CardTitle>
-                          <CardDescription className="text-sm font-bold">
-                            {formatISODate(test.iso_created_at)}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardFooter className="flex justify-between">
-                          <Button
-                            variant="outline"
-                            className="rounded-[4px] bg-white hover:bg-[#FFFFFF33] text-[14px] font-bold text-black hover:text-black px-6 py-2 border-0"
-                            onClick={() => handleButtonClick(test)}
-                          >
-                            View Data
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-              </>}
-      
-              {!cardView && <div className="text-[12px] leading-6 underline text-white cursor-pointer" onClick={() => setCardView(true)}>
-                              Back to all live tests
-                            </div>}
-              {!cardView && 
-                            <div className="flex flex-row justify-between">
-                            <h5 className="flex mt-5 mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
-                            {selectedTest?.title} Test
-                            </h5>
-                            <h5 className="flex mt-5 mb-5 text-xl font-semibold dark:text-gray-700 text-white ml-4">
-                            Session Count : {sessionCount}
-                            </h5>
-                            </div>} 
-              {!cardView && <div className="w-full">
-                {selectedTest && <Chart id={selectedTest.record_id} />}
-              </div>}
-              </>
-            }
-            
-          </div>
+    <div className="p-5 bg-[#1b1d1f] min-w-screen min-h-screen">
+      { loading ? 
+        (<div className="flex justify-center items-center h-[100vh]">
+          <Spinner/>
+        </div>
         )
+        :
+        <>
+        {
+          !cardView && selectedTest?.is_live ?
+          <a className="flex w-[70px] p-2 justify-center cursor-pointer items-center gap-[10px] absolute right-[31px] top-[69px] rounded-[4px] bg-[#6F1111] text-white text-[12px] font-bold hover:bg-opacity-50" onClick={()=>{endTest()}}>End Test</a>
+          :
+          ""
+          // <a className="flex w-[134px] p-2 justify-center items-center gap-[10px] absolute right-[31px] top-[69px] rounded-[4px] bg-[#10503D] text-white text-[12px] font-bold hover:bg-opacity-50" href={'/create'}>New A/B Test</a>
+        }
+
+        {cardView && <>
+        {currentData.length > 0 ? (
+          <>
+
+            <h5 className="mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
+              Live Tests
+            </h5>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-6 gap-3 ml-4">
+              {currentData.map((test, index) => {
+                // const cardId = uuidv4();
+                {console.log("adsasdfasdf",test)}
+                return (
+                  <Card className="w-full rounded-[7.746px] bg-[#303133] text-white border-0" key={index}>
+                    <CardHeader>
+                      <div className="gap-2 flex flex-row">
+                        <div className="w-4 h-4 rounded-[100%] bg-[#10503d] mb-4"></div>
+                        <h3 className="text-[12px] leading-[14.4px] font-medium">Live</h3>
+                      </div>
+                      <h2 className="text-[18px] leading-[25.2px] font-bold capitalize ">
+                        {test.title}
+                      </h2>
+                      <CardDescription className="text-[#FFFFFF]/[0.7] h-[48px]">
+                        <h4 className="text-[10px] leading-[14px] mb-1 font-bold">{(test.description == '' || test.description == null)? "" : "DESCRIPTION"}</h4>
+                        <h3 className="text-[14px] leading-[19.6px]">{(test.description == null || test.description == '') ? "" : test.description}</h3>
+                        
+                      </CardDescription>
+                    </CardHeader>
+                    <CardFooter className="flex flex-col items-start">
+                      <Button
+                        variant="outline"
+                        className="rounded-[4px] bg-white hover:bg-[#FFFFFF33] text-[14px] font-bold text-black hover:text-black px-6 py-2 mb-4 border-0"
+                        onClick={() => handleButtonClick(test)}
+                      >
+                        View Data
+                      </Button>
+                      <h4 className="text-[10px] leading-[14px]">{formatISODate(test.iso_created_at)}</h4>
+                    </CardFooter>
+                  </Card>
+                )
+              })}
+            </div>
+          </>
+        ) : (
+          ""
+        )}
+
+        {previousData.length > 0 ? (
+          <div className="mt-5">
+            <h5 className="mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-4">
+            Completed Tests
+            </h5>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-6 gap-3 ml-4">
+              {previousData.map((test, index) => (
+                <Card className="w-full  rounded-[7.746px] bg-[#303133] text-white border-0" key={index}>
+                  <CardHeader>
+                    <div className="gap-2 flex flex-row">
+                      <div className="w-4 h-4 rounded-[100%] bg-[#F3ABAB] mb-4"></div>
+                      <h3 className="text-[12px] leading-[14.4px] font-medium">Completed</h3>
+                    </div>
+                    <h2 className="text-[18px] leading-[25.2px] font-bold capitalize ">
+                        {test.title}
+                    </h2>
+                    <CardDescription className="text-[#FFFFFF]/[0.7] h-[48px]">
+                      <h4 className="text-[10px] leading-[14px] mb-1 font-bold">{(test.description == '' || test.description == null)? "" : "DESCRIPTION"}</h4>
+                      <h3 className="text-[14px] leading-[19.6px]">{(test.description == null || test.description == '') ? "     " : test.description}</h3>
+                    </CardDescription>
+                  </CardHeader>
+                  <CardFooter className="flex flex-col items-start">
+                    <Button
+                      variant="outline"
+                      className="rounded-[4px] bg-white hover:bg-[#FFFFFF33] text-[14px] font-bold text-black hover:text-black mb-4 px-6 py-2 border-0"
+                      onClick={() => handleButtonClick(test)}
+                    >
+                      View Data
+                    </Button>
+                    <h4 className="text-[10px] leading-[14px]">{formatCreateDate(test.iso_created_at)}</h4>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        </>}
+
+        {!cardView && <div className="text-[12px] leading-6 underline text-white cursor-pointer ml-[20px]" onClick={() => setCardView(true)}>
+                        Back to all live tests
+                      </div>}
+        {!cardView && 
+                      <h5 className="flex mt-5 mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-5">
+                      {selectedTest?.title}
+                      </h5>}
+                      {/* {<div className="flex flex-row justify-between">
+                      
+                      <h5 className="flex mt-5 mb-5 text-xl font-semibold dark:text-gray-700 text-white ml-4">
+                      Session Count : {sessionCount}
+                      </h5> 
+                        </div>}  */}
+        {!cardView && <div className="w-full ">
+          {selectedTest && <Chart id={selectedTest.record_id} />}
+        </div>}
+        </>
+      }
+      
+    </div>
+  )
 }

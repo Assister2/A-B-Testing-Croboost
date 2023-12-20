@@ -1,0 +1,17 @@
+---
+import Insights from '../../components/Insights';
+import Layout from '../../layouts/Layout.astro';
+---
+<script>
+	import { loadTokens } from "../../utils";
+	var tokens = loadTokens();
+	if (!tokens || !tokens.id_token){
+		window.location.replace("/login");
+	}
+	else {
+		tokens = null;
+	}
+</script>
+<Layout title="Croboost">
+	<Insights client:load/>
+</Layout>

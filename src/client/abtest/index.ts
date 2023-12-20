@@ -1,6 +1,7 @@
 import { API_ROOT, V2_API_ROOT } from "../../constants"
 
 export interface ABTest {
+  description: string
   iso_created_at: string
   iso_updated_at: string
   user_id: string
@@ -8,6 +9,7 @@ export interface ABTest {
   s3_key: string
   title: string
   is_live: boolean
+  preview_url: string
   data?: string
 }
 
@@ -41,8 +43,10 @@ export const getTests = async (token: string): Promise<ABTest[]> => {
 export const createTest = async (
   token: string,
   title: string,
+  preview_url: string,
   data?: string
 ): Promise<ABTest> => {
+  console.log("IN API", data)
   const url = `${API_ROOT}/ab/tests/`
   const response = await fetch(url, {
     method: "POST",
@@ -52,9 +56,11 @@ export const createTest = async (
     },
     body: JSON.stringify({
       title,
+      preview_url,
       data,
     }),
   })
+  console.log("POST body", JSON.stringify({title, preview_url, data}))
   const json = await response.json()
   return json
 }
@@ -133,20 +139,60 @@ export const getChartData = async (token: string,id:any): Promise<any> => {
   return data
 }
 
+export const getTestData = async (token: string, id:any): Promise<any> => {
+  const url = `${V2_API_ROOT}/metrics/tests/${id}`
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    }
+  })
+  const data = await response.json()
+  return data
+}
+
+export const getInsightsNames = async (token: string, user_id:any): Promise<any> => {
+  const url = `${V2_API_ROOT}/metrics/shopify-insights/${user_id}/names`
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    }
+  })
+  const data = await response.json()
+  // console.log("shopify-insights user_id names",user_id,data)
+  return data
+}
+
+export const getInsightsData = async (token: string, user_id:any, insight_name: string): Promise<any> => {
+  const url = `${V2_API_ROOT}/metrics/shopify-insights/${user_id}/insight/${insight_name}`
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    }
+  })
+  const data = await response.json()
+  // console.log("shopify-insights datas names", insight_name ,user_id,data)
+  return data
+}
 
 export const getUserData = async () => {
-   const tokens: any = localStorage.getItem('ab-website-tokens');
-   const parsedTokens = JSON.parse(tokens);
+  const tokens: any = localStorage.getItem('ab-website-tokens');
+  const parsedTokens = JSON.parse(tokens);
   
-   const url = `${API_ROOT}/ab/tests/`
-
-     const response = await fetch(url, {
+  const url = `${API_ROOT}/ab/tests/`
+  const response = await fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${parsedTokens?.id_token}`,
     },
   })
+  console.log("USER", response)
   const data = await response.json()
   return parsedTokens?.id_token
 }

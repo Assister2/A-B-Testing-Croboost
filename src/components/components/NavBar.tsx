@@ -18,7 +18,8 @@ const PAGES = {
   TESTS: "/tests",
   TESTVIEW: "/testview",
   INSTALLATION:"/installation",
-  HISTORY:'/history'
+  HISTORY:'/history',
+  INSIGHTS:'/insights'
 }
 interface NavbarProps {
   navbarColor:string
@@ -147,6 +148,25 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
                     Installation
                   </NavigationMenuLink>
                 </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink
+                    href={PAGES.INSIGHTS}
+                    active={location === PAGES.INSIGHTS}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor  = `rgba(255, 255, 255, 0.10)`;
+                    }}
+                    onMouseLeave={(e) => {
+                       e.currentTarget.style.backgroundColor = location === PAGES.INSIGHTS ? `rgba(255, 255, 255, 0.10)` : `transparent`
+                    }}
+                    style={
+                      location === PAGES.INSIGHTS  
+                      ? { color: 'rgba(255, 255, 255, 0.62)', backgroundColor:'rgba(255, 255, 255, 0.10)', borderRadius:'8px', padding:'8px',  }
+                      : { color: 'rgba(255, 255, 255, 0.62)', borderRadius:'8px', padding:'8px', display: 'flex'}
+                    }
+                  >
+                    Insights
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
                
 
                 {/* <NavigationMenuItem>
@@ -181,16 +201,20 @@ const NavBar = ({navbarColor="original"}:NavbarProps) => {
               <NavigationMenuIndicator />
             </NavigationMenu>
           </div>
-
+          
           <div className='flex flex-row items-center gap-5 mt-5 justify-end sm:mt-0 sm:pl-5'>
             {/* <a className="font-medium text-blue-500" href="#" aria-current="page">Landing</a> */}
             {/* <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500" href="#">Account</a> */}
             {/* <a className="font-medium text-gray-600 hover:text-gray-400 dark:text-gray-400 dark:hover:text-gray-500" href="#">Work</a> */}
           </div>
         </nav>
-        {buttonVisible && <button className='min-w-[100px] text-sl font-semibold text-white cursor-pointer' onClick={logOut}>
-          Log out
-        </button>}
+        <div className="flex flex-row justify between">
+          <a className="flex w-[134px] p-2 justify-center items-center gap-[10px]
+          rounded-[4px] bg-[#10503D] text-white text-[12px] font-bold hover:bg-opacity-50" href={'/create'}>New A/B Test</a>
+          {buttonVisible && <button className='min-w-[100px] text-sl font-semibold text-white cursor-pointer' onClick={logOut}>
+            Log out
+          </button>}
+        </div>
       </div>
     </header>
   )
