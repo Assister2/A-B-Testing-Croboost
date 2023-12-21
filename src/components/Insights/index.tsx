@@ -201,15 +201,27 @@ export default function App() {
                   setAddTypeDevice(selected_device)
                   setAddTypeTime(selected_timeframe)
                   const Data1: any = selected_timeframe_and_device_data.map((data: any) =>
-                    Number(data.share*100)
+                    // Array(data.share*100, data.value)
+                    {
+                      let temp = []
+                      temp[0] = data.share*100
+                      temp[1] = data.value;
+                      return temp
+                      }
                   )
+                  console.log("IN PARENT",Data1)
                   setAddTypeData(Data1)
                   break;
                 case "_source":
                   setSourceDevice(selected_device)
                   setSourceTime(selected_timeframe)
                   const Data2: any = selected_timeframe_and_device_data.map((data: any) =>
-                    Number(data.share*100)
+                  {
+                    let temp = []
+                    temp[0] = data.share*100
+                    temp[1] = data.value;
+                    return temp
+                    }
                   )
                   setSourceData(Data2)
                   break;
@@ -217,7 +229,12 @@ export default function App() {
                   setSourceURLDevice(selected_device)
                   setSourceURLTime(selected_timeframe)
                   const Data3: any = selected_timeframe_and_device_data.map((data: any) =>
-                    Number(data.share*100)
+                  {
+                    let temp = []
+                    temp[0] = data.share*100
+                    temp[1] = data.value;
+                    return temp
+                    }
                   )
                   setSourceURLData(Data3)
                   break;
@@ -225,7 +242,12 @@ export default function App() {
                   setStockTypeDevice(selected_device)
                   setStockTypeTime(selected_timeframe)
                   const Data4: any = selected_timeframe_and_device_data.map((data: any) =>
-                    Number(data.share*100)
+                  {
+                    let temp = []
+                    temp[0] = data.share*100
+                    temp[1] = data.value;
+                    return temp
+                    }
                   )
                   setStockTypeData(Data4)
                   break;
@@ -233,7 +255,12 @@ export default function App() {
                   setSectionDevice(selected_device)
                   setSectionTime(selected_timeframe)
                   const Data5: any = selected_timeframe_and_device_data.map((data: any) =>
-                    Number(data.share*100)
+                  {
+                    let temp = []
+                    temp[0] = data.share*100
+                    temp[1] = data.value;
+                    return temp
+                    }
                   )
                   setSectionData(Data5)
                   break;
@@ -242,7 +269,12 @@ export default function App() {
                   setInternalReferralDevice(selected_device)
                   setInternalReferralTime(selected_timeframe)
                   const Data6: any = selected_timeframe_and_device_data.map((data: any) =>
-                    Number(data.share*100)
+                  {
+                    let temp = []
+                    temp[0] = data.share*100
+                    temp[1] = data.value;
+                    return temp
+                    }
                   )
                   setInternalReferralData(Data6)
                   break;
@@ -273,8 +305,12 @@ export default function App() {
           (item) => item.device == addTypeDevice
         )
         console.log("addTypeDATA", addTypeData_Time_Device)
-        const Data: any = addTypeData_Time_Device.map((data: any) =>
-          Number(data.share*100)
+        const Data: any = addTypeData_Time_Device.map((data: any) =>{
+          let temp = []
+          temp[0] = data.share*100
+          temp[1] = data.value;
+          return temp
+          }
         )
         setAddTypeData(Data)
       }
@@ -289,7 +325,12 @@ export default function App() {
           (item) => item.device == sourceDevice
         )
         const Data: any = sourceData_Time_Device.map((data: any) =>
-          Number(data.share*100)
+        {
+          let temp = []
+          temp[0] = data.share*100
+          temp[1] = data.value;
+          return temp
+          }
         )
         setSourceData(Data)
       }
@@ -304,7 +345,12 @@ export default function App() {
           (item) => item.device == sourceURLDevice
         )
         const Data: any = sourceURLData_Time_Device.map((data: any) =>
-          Number(data.share*100)
+        {
+          let temp = []
+          temp[0] = data.share*100
+          temp[1] = data.value;
+          return temp
+          }
         )
         setSourceURLData(Data)
       }
@@ -319,7 +365,12 @@ export default function App() {
           (item) => item.device == sourceDevice
         )
         const Data: any = stockTypeData_Time_Device.map((data: any) =>
-          Number(data.share*100)
+        {
+          let temp = []
+          temp[0] = data.share*100
+          temp[1] = data.value;
+          return temp
+          }
         )
         setStockTypeData(Data)
       }
@@ -334,7 +385,12 @@ export default function App() {
           (item) => item.device == sectionDevice
         )
         const Data: any = sectionData_Time_Device.map((data: any) =>
-          Number(data.share*100)
+        {
+          let temp = []
+          temp[0] = data.share*100
+          temp[1] = data.value;
+          return temp
+          }
         )
         setSectionData(Data)
       }
@@ -349,7 +405,12 @@ export default function App() {
           (item) => item.device == internalReferralDevice
         )
         const Data: any = internalReferralData_Time_Device.map((data: any) =>
-          Number(data.share*100)
+        {
+          let temp = []
+          temp[0] = data.share*100
+          temp[1] = data.value;
+          return temp
+          }
         )
         setStockTypeData(Data)
       }
@@ -409,43 +470,43 @@ export default function App() {
                       case "_add_type":
                         return (
                           InsightsItem({deviceTypes: deviceTypes, device: addTypeDevice, setDevice: setAddTypeDevice,
-                          timeFrames: timeFrames, time: addTypeTime, setTime: setAddTypeTime, data: addTypeData,
-                          title: name["name"], dataKey:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']})
+                          timeFrames: timeFrames, time: addTypeTime, setTime: setAddTypeTime, chartdata: addTypeData,
+                          title: name["name"]})
                         )
                         break;
                       case "_source":
                         return (
                           InsightsItem({deviceTypes: deviceTypes, device: sourceDevice, setDevice: setSourceDevice,
-                          timeFrames: timeFrames, time: sourceTime, setTime: setSourceTime, data: sourceData,
-                          title: name["name"], dataKey:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']})
+                          timeFrames: timeFrames, time: sourceTime, setTime: setSourceTime, chartdata: sourceData,
+                          title: name["name"]})
                         )
                         break;
                       case "_sourceurl":
                         return (
                           InsightsItem({deviceTypes: deviceTypes, device: sourceURLDevice, setDevice: setSourceURLDevice,
-                          timeFrames: timeFrames, time: sourceURLTime, setTime: setSourceURLTime, data: sourceURLData,
-                          title: name["name"], dataKey:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']})
+                          timeFrames: timeFrames, time: sourceURLTime, setTime: setSourceURLTime, chartdata: sourceURLData,
+                          title: name["name"]})
                         )
                         break;
                       case "_stock_type":
                         return (
                           InsightsItem({deviceTypes: deviceTypes, device: stockTypeDevice, setDevice: setStockTypeDevice,
-                          timeFrames: timeFrames, time: stockTypeTime, setTime: setStockTypeTime, data: stockTypeData,
-                          title: name["name"], dataKey:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']})
+                          timeFrames: timeFrames, time: stockTypeTime, setTime: setStockTypeTime, chartdata: stockTypeData,
+                          title: name["name"]})
                         )
                         break;
                       case "_section_clicked":
                         return (
                           InsightsItem({deviceTypes: deviceTypes, device: sectionDevice, setDevice: setSectionDevice,
-                          timeFrames: timeFrames, time: sectionTime, setTime: setSectionTime, data: sectionData,
-                          title: name["name"], dataKey:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']})
+                          timeFrames: timeFrames, time: sectionTime, setTime: setSectionTime, chartdata: sectionData,
+                          title: name["name"]})
                         )
                         break;
                       case "_internal_referral":  
                         return (
                           InsightsItem({deviceTypes: deviceTypes, device: internalReferralDevice, setDevice: setInternalReferralDevice,
-                          timeFrames: timeFrames, time: internalReferralTime, setTime: setInternalReferralTime, data: internalReferralData,
-                          title: name["name"], dataKey:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']})
+                          timeFrames: timeFrames, time: internalReferralTime, setTime: setInternalReferralTime, chartdata: internalReferralData,
+                          title: name["name"]})
                         )
                         break;
                     }

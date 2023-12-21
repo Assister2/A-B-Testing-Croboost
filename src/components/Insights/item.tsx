@@ -30,7 +30,10 @@ const chartOptions = (chartTitle: string) => {
       legend: {
         position: "bottom" as const,
         align: 'start',
-        display: false, 
+        display: true,
+        labels: {
+          boxWidth: 30,
+        }
       },
       title: {
         display: false,
@@ -75,7 +78,7 @@ const chartOptions = (chartTitle: string) => {
       },
     },
     labels: {
-      display: false,
+      display: true,
     },
   }
 }
@@ -87,20 +90,20 @@ export interface CreateProps {
     timeFrames: string[],
     time: string,
     setTime : React.Dispatch<React.SetStateAction<string>>,
-    data: number[],
+    chartdata: [],
     title: string,
-    dataKey: string[]
 }
 
-const InsightsItem = ({deviceTypes, device, setDevice, timeFrames, time, setTime, data, title, dataKey} : CreateProps) => {
-    console.log("Title",title, device, time, data)
+const InsightsItem = ({deviceTypes, device, setDevice, timeFrames, time, setTime, chartdata, title} : CreateProps) => {
+    console.log("________________Title____________",title)
+
     const colors = ["#D6FFE1", "#D6E9FF", "#FFEED6", "#EAFFD6", "#EAD6FF", "#FFD6D6", "#D99393", "#D9C193"]
     const borderColors = ["#4B9A26", "#26699A", "#BC9C6F", "#8FAD71", "#887899", "#7E6969", "#6B4949", "#6D6049"]
     const  chartData = {
       labels: [title],
-      datasets: data.map((d, i) => ({
-          label: dataKey[i],
-          data: [d],
+      datasets: chartdata.map((d, i) => ({
+          label: d[1],
+          data: [d][0],
           backgroundColor: colors[i] ? colors[i] : "#D9C193",
           borderColor: borderColors[i] ? borderColors[i] : "#6D6049" 
       })),
