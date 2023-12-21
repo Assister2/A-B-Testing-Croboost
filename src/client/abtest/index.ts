@@ -46,7 +46,7 @@ export const createTest = async (
   preview_url: string,
   data?: string
 ): Promise<ABTest> => {
-  console.log("IN API", data)
+  // console.log("IN API", data)
   const url = `${API_ROOT}/ab/tests/`
   const response = await fetch(url, {
     method: "POST",
@@ -60,7 +60,7 @@ export const createTest = async (
       data,
     }),
   })
-  console.log("POST body", JSON.stringify({title, preview_url, data}))
+  // console.log("POST body", JSON.stringify({title, preview_url, data}))
   const json = await response.json()
   return json
 }

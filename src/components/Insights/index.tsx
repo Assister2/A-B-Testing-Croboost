@@ -297,9 +297,7 @@ export default function App() {
 
   useEffect(() => {
     if(addTypeDevice != "" || addTypeTime != ""){
-      console.log("BEFORE", addTypeData)
       const addTypeData_Time = originalAddTypeData[addTypeTime]
-      console.log("Change", addTypeData_Time, addTypeDevice, addTypeTime)
       if(addTypeData_Time != null && addTypeData_Time.length > 0){
         const addTypeData_Time_Device = addTypeData_Time.filter(
           (item) => item.device == addTypeDevice

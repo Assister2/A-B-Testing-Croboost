@@ -95,7 +95,7 @@ export interface CreateProps {
 }
 
 const InsightsItem = ({deviceTypes, device, setDevice, timeFrames, time, setTime, chartdata, title} : CreateProps) => {
-    console.log("________________Title____________",title)
+    // console.log("________________Title____________",title)
 
     const colors = ["#D6FFE1", "#D6E9FF", "#FFEED6", "#EAFFD6", "#EAD6FF", "#FFD6D6", "#D99393", "#D9C193"]
     const borderColors = ["#4B9A26", "#26699A", "#BC9C6F", "#8FAD71", "#887899", "#7E6969", "#6B4949", "#6D6049"]
