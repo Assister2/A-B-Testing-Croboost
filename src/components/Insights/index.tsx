@@ -96,7 +96,6 @@ export interface ChartProps {
 }
 
 export default function App() {
-  // console.log(id)
   const [notification, setNotification] = useState(null)
   const [allData, setAllData] = useState([])
   const [nameData, setNameData] = useState([])
@@ -151,7 +150,6 @@ export default function App() {
     if (tokens) {
       getTests(tokens.id_token)
         .then((tests: any) => {
-          // console.log("test",tests, tests[0]["user_id"])
           setUserId(tests[0]["user_id"])
         })
         .catch((err) => {
@@ -159,13 +157,10 @@ export default function App() {
         })
       getInsightsNames(tokens.id_token, userId)
         .then((data) => {
-          
           setNameData(data["insights"])
-          // console.log("InsightNames",data["insights"], nameData)
           data["insights"].map((names) => {
             getInsightsData(tokens?.id_token, userId, names["name"])
             .then((itemData) => {
-              // console.log("Insight Data", itemData)
               switch(names["name"]){
                 case "_add_type":
                   setOriginalAddTypeData(itemData)
@@ -197,11 +192,9 @@ export default function App() {
               )
               switch(names["name"]){
                 case "_add_type":
-                  // console.log("ADD_TYPE",selected_timeframe_and_device_data);
                   setAddTypeDevice(selected_device)
                   setAddTypeTime(selected_timeframe)
                   const Data1: any = selected_timeframe_and_device_data.map((data: any) =>
-                    // Array(data.share*100, data.value)
                     {
                       let temp = []
                       temp[0] = data.share*100
@@ -454,13 +447,6 @@ export default function App() {
                     </button>
                   </div>
                 )}
-                {/* <div className="flex flex-col w-[405px] p-[23.39px] gap-[23.39px] bg-[#00000042] mb-[22.54px]">
-                  <h1 className="text-[17.429px] font-bold leading-[20.915px] text-[#FFFFFF]">Overview</h1>
-                  <div className="flex flex-col gap-[7.75px]">
-                    <h5 className="text-[11.619px] font-bold text-[#FFFFFF]/[0.7]">Total Number of Sessions</h5>
-                    <h5 className="text-[13.556px] text-[#FFFFFF]">{sessionCount}</h5>
-                  </div>
-                </div> */}
                 <h1 className="text-[24px] leading-[28.8px] font-bold my-[31px] text-white">Insights</h1>
                 <div className="grid lg:grid-cols-2 grid-cols-1 w-full gap-x-[10px] gap-y-[25px]">
                   {nameData.map((name) => {

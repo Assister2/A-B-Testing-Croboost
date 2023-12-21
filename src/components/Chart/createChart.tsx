@@ -92,35 +92,6 @@ export interface CreateProps {
 
 const CreateChart = ({deviceTypes, device, setDevice, timeFrames, time, setTime, data, title, dataKey} : CreateProps) => {
     console.log("Title",title, device, time, data)
-    // useEffect(() => {
-    //     if (selectData.length > 0) {
-    //     const conversionData: any = selectData.map((data: any) =>
-    //         Number(data.Conversion_average.replace("%",""))
-    //     )
-    //     setChartDataNew(conversionData)
-    //     console.log("Conversion Rate", conversionData)
-    //     }
-    // }, [chartDataDevice, chartDataTime ])
-    
-    // useEffect(() => {
-    //     if (selectData.length > 0) {
-    //     const engagementData: any = selectData.map((data: any) =>
-    //         Number(data.Bounce_average.replace("%",""))
-    //     )
-    //     setEngagementDataNew(engagementData)
-    //     console.log("Engagement Data", engagementData)
-    //     }
-    // }, [engagementDataDevice, engagementDataTime])
-    
-    // useEffect(() => {
-    //     if (selectData.length > 0) {
-    //     const bounceData: any = selectData.map((data: any) =>
-    //         Number(data.links_click_average) + Number(data.page_views_average)
-    //     )
-    //     setBounceDataNew(bounceData)
-    //     console.log("Bounce Data", bounceData)
-    //     }
-    // }, [bounceDataDevice, bounceDataTime])
     const colors = ["#A9E0F1", "#F5D6FF"]
     const borderColors = ["#1686AA", "#7E269A"]
     const  chartData = {
@@ -134,11 +105,9 @@ const CreateChart = ({deviceTypes, device, setDevice, timeFrames, time, setTime,
     }
   const SelectDeviceOption = (option: string) => {
     setDevice(option)
-    console.log("Device", option)
   }
   const SelectTimeOption = (option: string) => {
     setTime(option)
-    console.log("Time", option)
   }
   const variantName= dataKey[0];
   const compareValue = data[0]<data[1];
@@ -172,9 +141,7 @@ const CreateChart = ({deviceTypes, device, setDevice, timeFrames, time, setTime,
             <h5 className="text-[#FFFFFF]/50 text-[12px] font-bold leading-[120%]">Device</h5>
             <select id={`${title} Device`} 
               onChange={(event) => SelectDeviceOption(event.target.value)} 
-              // onChange={optionchanged}
               className="w-[126px] h-[31px] rounded-[4px] text-[#FFFFFF]/[0.7] text-[12px] leading-[14.4px] font-medium bg-[#FFFFFF]/[0.16] p-2 shadow-[0_4px_15px_0px_rgba(0,0,0,0.06)]" placeholder="All Devices">
-              {/* <option key="all" value="all">All Devices</option> */}
               {options_device}
             </select>
           </div>

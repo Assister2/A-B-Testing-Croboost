@@ -105,7 +105,6 @@ export default function App() {
   }
   const formatCreateDate = (isoDate: string) =>{
     const date: any = new Date(isoDate)
-    console.log("date",date)
     const months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September','October', 'November', 'December']
     const month = date.getMonth();
     const day = date.getDate();
@@ -132,7 +131,6 @@ export default function App() {
   function handleButtonClick(test: ABTest) {
     setCardView(false);
     setSelectedTest(test)
-    // const id = test.record_id
     sessionCount_number(test)
   }
 
@@ -268,12 +266,6 @@ export default function App() {
                       <h5 className="flex mt-5 mb-5 text-2xl font-bold tracking-tight dark:text-gray-900 text-white ml-5">
                       {selectedTest?.title}
                       </h5>}
-                      {/* {<div className="flex flex-row justify-between">
-                      
-                      <h5 className="flex mt-5 mb-5 text-xl font-semibold dark:text-gray-700 text-white ml-4">
-                      Session Count : {sessionCount}
-                      </h5> 
-                        </div>}  */}
         {!cardView && <div className="w-full ">
           {selectedTest && <Chart id={selectedTest.record_id} />}
         </div>}

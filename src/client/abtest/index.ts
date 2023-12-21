@@ -46,7 +46,6 @@ export const createTest = async (
   preview_url: string,
   data?: string
 ): Promise<ABTest> => {
-  // console.log("IN API", data)
   const url = `${API_ROOT}/ab/tests/`
   const response = await fetch(url, {
     method: "POST",
@@ -60,7 +59,6 @@ export const createTest = async (
       data,
     }),
   })
-  // console.log("POST body", JSON.stringify({title, preview_url, data}))
   const json = await response.json()
   return json
 }
@@ -162,7 +160,6 @@ export const getInsightsNames = async (token: string, user_id:any): Promise<any>
     }
   })
   const data = await response.json()
-  // console.log("shopify-insights user_id names",user_id,data)
   return data
 }
 
@@ -176,7 +173,6 @@ export const getInsightsData = async (token: string, user_id:any, insight_name: 
     }
   })
   const data = await response.json()
-  // console.log("shopify-insights datas names", insight_name ,user_id,data)
   return data
 }
 

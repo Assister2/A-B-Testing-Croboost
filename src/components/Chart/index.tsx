@@ -200,7 +200,6 @@ const Chart = ({ id }: ChartProps) => {
         .then((tests) => {
           const { data } = tests
           const parsedData = JSON.parse(data)
-          console.log("SDFSDKLFSLDKFLSDKF", parsedData)
           const filteredArray = parsedData.filter(
             (item: any) => item.Variant !== "Overall"
           )
@@ -215,16 +214,14 @@ const Chart = ({ id }: ChartProps) => {
           console.log(err)
           showNotification("Data not Found")
         })
-      getTestData(tokens.id_token, "fd08ee8d-df53-43ac-b689-64c7c45bfa05")
+      getTestData(tokens.id_token, id)
         .then((data) =>{
           setSelectData(data)
-          console.log("ASDALSKDJAKLSDJLAKSD",data)
           const meta = data.meta
           const selected_timeframe = meta.timeframe_names[0]
           const selected_device = meta.device_names[0]
           const sample_names = meta.sample_names;
           setNames(sample_names)
-          // console.log("names",sample_names)
           setTimeFrames(meta.timeframe_names)
           setDeviceTypes(meta.device_names)
           const selected_timeframe_data = data[selected_timeframe]
@@ -254,8 +251,6 @@ const Chart = ({ id }: ChartProps) => {
           const selected_timeframe_and_device_data = selected_timeframe_data.filter(
             (item) => item.device == selected_device
           )
-          // console.log(selected_timeframe, selected_device)
-          // console.log(selected_timeframe_and_device_data)
           const conversionData: any = selected_timeframe_and_device_data.map((data: any) =>
             Number(data.conversion_average)
           )
@@ -274,7 +269,6 @@ const Chart = ({ id }: ChartProps) => {
           setConversingData(conversionData)
           setEngagingData(engagementData)
           setBouncingData(bounceData)
-          // console.log("FIRST", conversionData, engagementData, bounceData)
         })
         .catch((err) => {
           console.log(err)
@@ -312,7 +306,6 @@ const Chart = ({ id }: ChartProps) => {
         const conversingData_time_device = conversingData_time.filter(
           (item) => item.device == conversionDevice
         )
-        // console.log("CONVERSINGDATA", conversingData_time_device)
         const conversionData: any = conversingData_time_device.map((data: any) =>
           Number(data.conversion_average) * 1000
         )
@@ -327,7 +320,6 @@ const Chart = ({ id }: ChartProps) => {
         const bouncingData_time_device = bouncingData_time.filter(
           (item) => item.device == bounceDevice
         )
-        // console.log("bouncingDATA", bouncingData_time_device)
         const bounceData: any = bouncingData_time_device.map((data: any) =>
           Number(data.link_clicks_average + data.page_views_average) * 10
         )
@@ -343,7 +335,6 @@ const Chart = ({ id }: ChartProps) => {
         const engagingData_time_device = engagingData_time.filter(
           (item) => item.device == engagementDevice
         )
-        // console.log("engagingDATA", engagingData_time_device)
         const engagementData: any = engagingData_time_device.map((data: any) =>
           Number(data.bounce_average) * 100
         )
