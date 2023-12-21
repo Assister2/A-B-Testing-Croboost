@@ -157,13 +157,13 @@ export default function App() {
         .catch((err) => {
           console.log("err",err)
         })
-      getInsightsNames(tokens.id_token, "128c6645-93eb-4583-9c90-231e20cea7d5")
+      getInsightsNames(tokens.id_token, userId)
         .then((data) => {
           
           setNameData(data["insights"])
           // console.log("InsightNames",data["insights"], nameData)
           data["insights"].map((names) => {
-            getInsightsData(tokens?.id_token, "128c6645-93eb-4583-9c90-231e20cea7d5", names["name"])
+            getInsightsData(tokens?.id_token, userId, names["name"])
             .then((itemData) => {
               // console.log("Insight Data", itemData)
               switch(names["name"]){
