@@ -109,7 +109,8 @@ const CreateChart = ({deviceTypes, device, setDevice, timeFrames, time, setTime,
   const SelectTimeOption = (option: string) => {
     setTime(option)
   }
-  const variantName= dataKey[0];
+  const variantName1= dataKey[0];
+  const variantName2= dataKey[1];
   const compareValue = data[0]<data[1];
   const options_device = deviceTypes.map((deviceType) => {
   return (
@@ -133,8 +134,15 @@ const CreateChart = ({deviceTypes, device, setDevice, timeFrames, time, setTime,
       <section className="flex flex-row justify-between">
         <div className="flex flex-col gap-2">
           <h1 className="text-[19.875px] font-bold text-white leading-6">{title}</h1>
-          <h3 className="text-[14px] leading-[16.8px] text-white">{variantName} has a { compareValue == true ? "higher" : "lower"} {title == "Conversion Rate" ? "conversion":
-          title == "Bounce Rate" ? "bounce rate" : "engagement" }</h3>
+          <h3 className="text-[14px] leading-[16.8px] text-white">
+            {
+              (compareValue === true && title !== "Bounce Rate") ? `${variantName2} has a higher ${title}` :
+              (compareValue === false && title !== "Bounce Rate") ? `${variantName1} has a higher ${title}` :
+              (compareValue === true && title === "Bounce Rate") ? `${variantName1} has a lower ${title}` :
+              (compareValue === false && title === "Bounce Rate") ? `${variantName2} has a lower ${title}` :
+              ""
+            }
+          </h3>
         </div>
         <div className="flex flex-row gap-3 justify-between">
           <div className="flex flex-col gap-2">
